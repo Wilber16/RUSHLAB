@@ -131,3 +131,64 @@ export function AreaIcon({ name, ...p }: { name: LabAreaIcon } & P) {
   const Icon = areaIcons[name];
   return <Icon {...p} />;
 }
+
+// Ilustración de producto mientras no tengamos fotos (según el tipo)
+const kindIcons: Record<string, (p: P) => React.JSX.Element> = {
+  "Tarjeta gráfica": areaIcons.gpu,
+  Procesador: (p) => (
+    <svg {...base} {...p}>
+      <rect x="5" y="5" width="14" height="14" rx="1.5" />
+      <rect x="9" y="9" width="6" height="6" />
+      <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" />
+    </svg>
+  ),
+  "Memoria RAM": areaIcons.memory,
+  SSD: (p) => (
+    <svg {...base} {...p}>
+      <rect x="2" y="8" width="20" height="8" rx="1" />
+      <path d="M5 11h6v2H5zM14 11h2M17 11h2M2 12h-1" />
+    </svg>
+  ),
+  "Placa madre": areaIcons.board,
+  "Fuente de poder": (p) => (
+    <svg {...base} {...p}>
+      <rect x="3" y="5" width="18" height="14" rx="1.5" />
+      <circle cx="10" cy="12" r="4" />
+      <path d="M10 8v8M6 12h8M17 9h1M17 12h1M17 15h1" />
+    </svg>
+  ),
+  Gabinete: areaIcons.build,
+  Refrigeración: (p) => (
+    <svg {...base} {...p}>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="1.5" />
+      <path d="M12 10.5c0-3 1-5.5 3-6M13.5 12c3 0 5.5 1 6 3M12 13.5c0 3-1 5.5-3 6M10.5 12c-3 0-5.5-1-6-3" />
+    </svg>
+  ),
+  Monitor: areaIcons.monitor,
+  Teclado: (p) => (
+    <svg {...base} {...p}>
+      <rect x="2" y="7" width="20" height="10" rx="1.5" />
+      <path d="M5 10h1M8 10h1M11 10h1M14 10h1M17 10h2M6 14h12" />
+    </svg>
+  ),
+  Mouse: (p) => (
+    <svg {...base} {...p}>
+      <rect x="7" y="3" width="10" height="18" rx="5" />
+      <path d="M12 3v6" />
+    </svg>
+  ),
+  Audífonos: (p) => (
+    <svg {...base} {...p}>
+      <path d="M4 15v-3a8 8 0 0 1 16 0v3" />
+      <rect x="3" y="14" width="4" height="6" rx="1.5" />
+      <rect x="17" y="14" width="4" height="6" rx="1.5" />
+    </svg>
+  ),
+  Accesorio: areaIcons.peripherals,
+};
+
+export function KindIcon({ kind, ...p }: { kind: string } & P) {
+  const Icon = kindIcons[kind] ?? areaIcons.peripherals;
+  return <Icon {...p} />;
+}

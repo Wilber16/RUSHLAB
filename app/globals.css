@@ -1072,3 +1072,628 @@ p {
     transition: none !important;
   }
 }
+
+/* =========================================================
+   Páginas de áreas del laboratorio
+   ========================================================= */
+
+.page-title {
+  font-size: var(--t-2xl);
+}
+
+.area .area-h {
+  font-size: 1.45rem;
+}
+
+.area-count {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: var(--t-xs);
+  color: var(--muted);
+}
+
+.crumbs a {
+  text-decoration: none;
+}
+
+.crumbs a:hover {
+  color: var(--text);
+}
+
+.crumbs [aria-current] {
+  color: var(--text);
+}
+
+.area-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+  padding-block: 28px 64px;
+}
+
+/* Menú lateral */
+.area-side {
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 140px);
+  display: grid;
+  gap: 18px;
+}
+
+.area-side-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+
+.area-side nav {
+  min-width: 0;
+}
+
+.area-side ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.area-side a {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  text-decoration: none;
+  color: var(--muted);
+}
+
+.area-side a svg {
+  width: 22px;
+  height: 22px;
+}
+
+.area-side a strong {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.08rem;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.area-side a small {
+  display: block;
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+.area-side a:hover {
+  background: var(--panel);
+}
+
+.area-side a[aria-current="page"] {
+  background: rgba(255, 107, 26, 0.1);
+  border-color: rgba(255, 107, 26, 0.55);
+  color: var(--text);
+}
+
+.area-side a[aria-current="page"] svg,
+.area-side a[aria-current="page"] strong {
+  color: var(--orange);
+}
+
+.area-side-help {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: var(--t-sm);
+  color: var(--muted);
+}
+
+.area-side-help strong {
+  color: var(--text);
+}
+
+.area-side-help .btn {
+  margin-top: 6px;
+  min-height: 42px;
+}
+
+.area-main {
+  min-width: 0;
+  display: grid;
+  gap: 28px;
+}
+
+/* Encabezado del área */
+.area-banner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 230px;
+  gap: 16px;
+  min-height: 260px;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 90% at 90% 20%, rgba(255, 107, 26, 0.16), transparent 70%),
+    radial-gradient(60% 80% at 60% 110%, rgba(42, 166, 255, 0.12), transparent 70%),
+    var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.area-banner-copy {
+  display: grid;
+  gap: 12px;
+  align-content: center;
+  padding: 26px 0 26px 28px;
+  min-width: 0;
+}
+
+.area-banner h1 {
+  font-size: clamp(2.6rem, 5.4vw, 4.2rem);
+  text-transform: uppercase;
+  line-height: 0.9;
+}
+
+.area-banner h1 span {
+  color: var(--orange);
+}
+
+.area-banner-desc {
+  font-weight: 700;
+  font-size: var(--t-md);
+}
+
+.area-banner-intro {
+  color: var(--muted);
+  max-width: 52ch;
+  font-size: var(--t-sm);
+}
+
+.area-trust {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: var(--t-xs);
+  color: var(--muted);
+}
+
+.area-trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.area-trust svg {
+  width: 16px;
+  height: 16px;
+  color: var(--orange);
+}
+
+.area-banner-art {
+  position: relative;
+  margin: 0;
+  align-self: end;
+  height: 100%;
+}
+
+.area-banner-art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  mask-image: linear-gradient(to right, transparent, #000 30%);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 30%);
+}
+
+.area-banner-art figcaption {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  padding: 10px 12px;
+  background: rgba(15, 17, 21, 0.85);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.15;
+}
+
+.area-banner-art figcaption span {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.72rem;
+  color: var(--orange);
+}
+
+/* Barra del catálogo y filtros */
+.catalog {
+  display: grid;
+  gap: 16px;
+}
+
+.catalog-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.catalog-bar h2 {
+  font-size: 1.7rem;
+  text-transform: uppercase;
+}
+
+.sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--t-sm);
+  color: var(--muted);
+}
+
+select {
+  height: 40px;
+  padding: 0 34px 0 12px;
+  background: var(--panel)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23a3a9b4' stroke-width='1.8'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E")
+    no-repeat right 12px center;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: var(--t-sm);
+  appearance: none;
+  cursor: pointer;
+}
+
+.filters {
+  display: grid;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chips button {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: var(--t-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chips button:hover {
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+.chips button[aria-pressed="true"] {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--orange-ink);
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-sm);
+  cursor: pointer;
+}
+
+.toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--orange);
+}
+
+.link-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--blue);
+  font: inherit;
+  font-size: var(--t-sm);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Grilla y tarjetas de producto */
+.pgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+.pcard {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.pcard:hover {
+  border-color: #3a414d;
+}
+
+.pcard-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  background:
+    radial-gradient(60% 70% at 50% 45%, rgba(42, 166, 255, 0.12), transparent 70%),
+    var(--panel-2);
+  color: var(--blue);
+}
+
+.pcard-visual svg {
+  width: 72px;
+  height: 72px;
+  stroke-width: 1.2;
+}
+
+.pcard-kind {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  background: rgba(15, 17, 21, 0.7);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.pcard-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  flex: 1;
+}
+
+.pcard-brand {
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.pcard-name {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.pcard-specs {
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pcard-specs li {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--muted);
+}
+
+.pcard-foot {
+  margin-top: auto;
+  padding-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.pcard-price {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 1.85rem;
+  line-height: 1;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.pcard-price s {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.pcard-stock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-xs);
+  color: var(--muted);
+}
+
+.pcard-stock .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.stock-in_stock .dot {
+  background: var(--ok);
+}
+
+.stock-on_order .dot {
+  background: #f2b33d;
+}
+
+.stock-sold_out .dot {
+  background: var(--muted);
+}
+
+.pcard .btn {
+  min-height: 42px;
+}
+
+.pcard-soldout .pcard-visual,
+.pcard-soldout .pcard-price {
+  opacity: 0.55;
+}
+
+.empty {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 32px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+}
+
+@media (max-width: 960px) {
+  .area-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding-top: 16px;
+  }
+  .area-side {
+    position: static;
+    gap: 0;
+    min-width: 0;
+  }
+  .area-side-title,
+  .area-side-help,
+  .area-side a small {
+    display: none;
+  }
+  .area-side ul {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+  }
+  .area-side li {
+    flex: none;
+  }
+  .area-side a {
+    grid-template-columns: 20px auto;
+    gap: 8px;
+    padding: 8px 12px;
+    border-color: var(--line);
+  }
+  .area-side a svg {
+    width: 18px;
+    height: 18px;
+  }
+  .area-side a strong {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .area-banner {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .area-banner-copy {
+    position: relative;
+    z-index: 1;
+    padding: 20px 18px;
+  }
+  .area-banner h1 {
+    font-size: 2.4rem;
+  }
+  .area-banner-art {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 46%;
+    opacity: 0.35;
+  }
+  .area-banner-art figcaption {
+    display: none;
+  }
+  .area-trust {
+    display: none;
+  }
+  .pgrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .pcard-body {
+    padding: 12px;
+  }
+  .pcard-price {
+    font-size: 1.5rem;
+  }
+  .pcard-visual svg {
+    width: 52px;
+    height: 52px;
+  }
+  .pcard .btn {
+    padding: 0 10px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .pgrid {
+    grid-template-columns: 1fr;
+  }
+}

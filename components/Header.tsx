@@ -3,7 +3,7 @@ import { Logo } from "./Logo";
 import { Menu, Search, WhatsApp } from "./icons";
 
 const nav = [
-  { label: "Áreas del laboratorio", href: "/#areas" },
+  { label: "Áreas del laboratorio", href: "/areas/" },
   { label: "Armados", href: "/#armados" },
   { label: "Upgrades", href: "/#upgrades" },
   { label: "Cómo comprar", href: "/#como-comprar" },
