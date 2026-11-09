@@ -1,6 +1,7 @@
 import type { Availability, Product } from "@/lib/catalog";
 import { formatPEN, whatsappLink } from "@/lib/config";
 import { KindIcon, WhatsApp } from "../icons";
+import { imageSrcSet, sizedImage } from "@/lib/shopify/image";
 
 const availabilityText: Record<Availability, string> = {
   in_stock: "Disponible, entrega en 24 a 48 h",
@@ -22,8 +23,19 @@ export function ProductCard({ product, compare }: { product: Product } & Compare
 
   return (
     <article className={`pcard${soldOut ? " pcard-soldout" : ""}`}>
-      <a className="pcard-visual" href={href} tabIndex={-1} aria-hidden="true">
-        <KindIcon kind={product.kind} />
+      <a className={`pcard-visual${product.image ? " has-photo" : ""}`} href={href} tabIndex={-1} aria-hidden="true">
+        {product.image ? (
+          <img
+            src={sizedImage(product.image.url, 400)}
+            srcSet={imageSrcSet(product.image.url, 400)}
+            alt=""
+            loading="lazy"
+            width={400}
+            height={250}
+          />
+        ) : (
+          <KindIcon kind={product.kind} />
+        )}
         <span className="pcard-kind">{product.kind}</span>
       </a>
       <div className="pcard-body">

@@ -46,6 +46,17 @@ export interface Product {
   priceIsExample: boolean;
   /** Ficha técnica completa (opcional). Si falta, se usan los specs. */
   details?: { label: string; value: string }[];
+  /** Foto principal (viene de Shopify) */
+  image?: ProductImage;
+  /** Todas las fotos (viene de Shopify) */
+  images?: ProductImage[];
+}
+
+export interface ProductImage {
+  url: string;
+  alt: string;
+  width?: number;
+  height?: number;
 }
 
 export interface BuildPart {

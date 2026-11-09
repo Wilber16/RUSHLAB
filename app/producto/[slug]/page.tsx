@@ -4,6 +4,7 @@ import { getAllProducts, getAreaBySlug, getProductBySlug, getRelatedProducts } f
 import type { Availability } from "@/lib/catalog";
 import { getKindInfo } from "@/lib/catalog/kind-info";
 import { formatPEN, whatsappLink } from "@/lib/config";
+import { imageSrcSet, sizedImage } from "@/lib/shopify/image";
 import { ProductCard } from "@/components/area/ProductCard";
 import { PayMethods } from "@/components/PayMethods";
 import { Check, KindIcon, Receipt, Shield, Truck, WhatsApp } from "@/components/icons";
@@ -69,10 +70,37 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
       <section className="product-top">
         <div className="product-gallery">
-          <div className="product-visual" aria-hidden="true">
-            <KindIcon kind={product.kind} />
-          </div>
-          <p className="product-photo-note">Foto del producto pendiente. Usaremos las imágenes oficiales del proveedor.</p>
+          {product.image ? (
+            <>
+              <div className="product-visual has-photo">
+                <img
+                  src={sizedImage(product.image.url, 800)}
+                  srcSet={imageSrcSet(product.image.url, 800)}
+                  alt={product.image.alt}
+                  width={800}
+                  height={600}
+                />
+              </div>
+              {product.images && product.images.length > 1 && (
+                <ul className="product-thumbs" aria-label="Más fotos">
+                  {product.images.slice(0, 6).map((img) => (
+                    <li key={img.url}>
+                      <a href={sizedImage(img.url, 1600)} target="_blank" rel="noopener">
+                        <img src={sizedImage(img.url, 160)} alt={img.alt} width={160} height={120} loading="lazy" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          ) : (
+            <>
+              <div className="product-visual" aria-hidden="true">
+                <KindIcon kind={product.kind} />
+              </div>
+              <p className="product-photo-note">Foto del producto pendiente.</p>
+            </>
+          )}
         </div>
 
         <div className="product-info">

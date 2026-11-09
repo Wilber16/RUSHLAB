@@ -40,7 +40,11 @@ export function whatsappLink(message: string): string {
   return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`;
 }
 
-/** Formato de precio en soles: S/ 4,790 */
+/** Formato de precio en soles: S/ 4,790 o S/ 2,499.90 si tiene céntimos */
 export function formatPEN(amount: number): string {
-  return `S/ ${amount.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
+  const hasCents = Math.round(amount * 100) % 100 !== 0;
+  return `S/ ${amount.toLocaleString("en-US", {
+    minimumFractionDigits: hasCents ? 2 : 0,
+    maximumFractionDigits: hasCents ? 2 : 0,
+  })}`;
 }
