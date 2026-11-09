@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   return {
     title: `${build.name}: PC gamer ${build.target} · RUSH LAB`,
     description: `${build.purpose} ${build.parts.map((p) => p.value).join(", ")}. Armada, probada y con garantía.`,
+    alternates: { canonical: `/pc-armadas/${build.slug}/` },
   };
 }
 

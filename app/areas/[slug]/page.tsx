@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   return {
     title: `${area.name}: ${area.description} · RUSH LAB`,
     description: area.intro ?? area.description,
+    alternates: { canonical: `/areas/${area.slug}/` },
   };
 }
 

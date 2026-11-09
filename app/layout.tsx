@@ -4,15 +4,11 @@ import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { CartToast } from "@/components/cart/CartToast";
 import { shopifyConfigured } from "@/lib/shopify/client";
+import { siteUrl } from "@/lib/site-url";
+import { site } from "@/lib/config";
+import { JsonLd } from "@/components/JsonLd";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
-
-// Dirección pública de la web, para los enlaces de la imagen al compartir.
-// Cuando tengas dominio propio, agrega NEXT_PUBLIC_SITE_URL en Vercel (ej.: https://rushlab.pe).
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "http://localhost:3000");
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -53,6 +49,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <CartToast />
         </CartProvider>
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "ComputerStore",
+            name: site.name,
+            url: siteUrl,
+            logo: `${siteUrl}/apple-icon.png`,
+            image: `${siteUrl}/opengraph-image.jpg`,
+            telephone: site.whatsappDisplay,
+            areaServed: "PE",
+            currenciesAccepted: "PEN",
+            address: { "@type": "PostalAddress", addressLocality: "Lima", addressCountry: "PE" },
+          }}
+        />
+        <Analytics />
       </body>
     </html>
   );

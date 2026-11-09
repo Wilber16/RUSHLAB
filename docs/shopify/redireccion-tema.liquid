@@ -1,0 +1,41 @@
+{%- comment -%}
+  RUSH LAB · Redirige la tienda de Shopify (rushlab-store.myshopify.com) a la web principal.
+  Pegar al inicio de <head> en layout/theme.liquid.
+  No toca el pago (checkout), la página de contraseña, el carrito ni las cuentas de cliente.
+  Cuando tengas dominio propio, cambia solo la línea rl_web.
+{%- endcomment -%}
+{%- liquid
+  assign rl_web = 'https://rushlab-five.vercel.app'
+  assign rl_path = '/'
+  assign rl_redirect = true
+  assign rl_areas = 'rush-power,hyperspeed,the-lab,control-room,gaming-arsenal' | split: ','
+  case request.page_type
+    when 'product'
+      assign rl_path = '/producto/' | append: product.handle | append: '/'
+    when 'collection'
+      if rl_areas contains collection.handle
+        assign rl_path = '/areas/' | append: collection.handle | append: '/'
+      else
+        assign rl_path = '/areas/'
+      endif
+    when 'list-collections'
+      assign rl_path = '/areas/'
+    when 'search'
+      assign rl_q = search.terms | url_encode
+      assign rl_path = '/buscar/?q=' | append: rl_q
+    when 'cart'
+      assign rl_redirect = false
+  endcase
+  if request.page_type contains 'customers'
+    assign rl_redirect = false
+  endif
+  if request.design_mode
+    assign rl_redirect = false
+  endif
+  assign rl_url = rl_web | append: rl_path
+-%}
+{%- if rl_redirect -%}
+  <meta http-equiv="refresh" content="0; url={{ rl_url }}">
+  <link rel="canonical" href="{{ rl_url }}">
+  <script>window.location.replace({{ rl_url | json }});</script>
+{%- endif -%}

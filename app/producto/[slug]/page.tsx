@@ -9,6 +9,8 @@ import { ProductCard } from "@/components/area/ProductCard";
 import { PayMethods } from "@/components/PayMethods";
 import { AddToCart } from "@/components/cart/AddToCart";
 import { ProductGallery } from "@/components/product/ProductGallery";
+import { JsonLd } from "@/components/JsonLd";
+import { absoluteUrl } from "@/lib/site-url";
 import { Check, KindIcon, Receipt, Shield, Truck, WhatsApp } from "@/components/icons";
 
 type Params = { slug: string };
@@ -25,8 +27,18 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   return {
     title: `${product.brand} ${product.name} · RUSH LAB`,
     description: `${product.kind} ${product.brand} ${product.name}: ${product.specs.join(", ")}. Envío a todo el Perú.`,
+    alternates: { canonical: `/producto/${product.slug}/` },
+    openGraph: product.image
+      ? { images: [{ url: product.image.url, alt: product.image.alt }], title: `${product.brand} ${product.name}` }
+      : undefined,
   };
 }
+
+const schemaAvailability: Record<Availability, string> = {
+  in_stock: "https://schema.org/InStock",
+  on_order: "https://schema.org/BackOrder",
+  sold_out: "https://schema.org/OutOfStock",
+};
 
 const availabilityCopy: Record<Availability, { title: string; text: string }> = {
   in_stock: {
@@ -56,6 +68,28 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
   return (
     <div className="wrap product-page">
+      {!product.priceIsExample && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: fullName,
+            brand: { "@type": "Brand", name: product.brand },
+            category: product.kind,
+            description: `${product.kind} ${fullName}: ${product.specs.join(", ")}.`,
+            image: Array.from(new Set([product.image, ...(product.images ?? [])].filter(Boolean).map((i) => i!.url))),
+            url: absoluteUrl(`/producto/${product.slug}/`),
+            offers: {
+              "@type": "Offer",
+              priceCurrency: "PEN",
+              price: product.price.toFixed(2),
+              availability: schemaAvailability[product.availability],
+              itemCondition: "https://schema.org/NewCondition",
+              url: absoluteUrl(`/producto/${product.slug}/`),
+            },
+          }}
+        />
+      )}
       <nav className="crumbs" aria-label="Ruta">
         <a href="/">Inicio</a>
         <span aria-hidden="true">/</span>
