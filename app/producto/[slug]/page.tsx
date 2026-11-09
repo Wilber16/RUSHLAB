@@ -8,6 +8,7 @@ import { imageSrcSet, sizedImage } from "@/lib/shopify/image";
 import { ProductCard } from "@/components/area/ProductCard";
 import { PayMethods } from "@/components/PayMethods";
 import { AddToCart } from "@/components/cart/AddToCart";
+import { ProductGallery } from "@/components/product/ProductGallery";
 import { Check, KindIcon, Receipt, Shield, Truck, WhatsApp } from "@/components/icons";
 
 type Params = { slug: string };
@@ -73,26 +74,10 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         <div className="product-gallery">
           {product.image ? (
             <>
-              <div className="product-visual has-photo">
-                <img
-                  src={sizedImage(product.image.url, 800)}
-                  srcSet={imageSrcSet(product.image.url, 800)}
-                  alt={product.image.alt}
-                  width={800}
-                  height={600}
-                />
-              </div>
-              {product.images && product.images.length > 1 && (
-                <ul className="product-thumbs" aria-label="Más fotos">
-                  {product.images.slice(0, 6).map((img) => (
-                    <li key={img.url}>
-                      <a href={sizedImage(img.url, 1600)} target="_blank" rel="noopener">
-                        <img src={sizedImage(img.url, 160)} alt={img.alt} width={160} height={120} loading="lazy" />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <ProductGallery
+                name={fullName}
+                images={[product.image, ...(product.images ?? []).filter((i) => i.url !== product.image?.url)]}
+              />
             </>
           ) : (
             <>
