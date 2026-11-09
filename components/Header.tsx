@@ -4,8 +4,8 @@ import { Menu, Search, WhatsApp } from "./icons";
 
 const nav = [
   { label: "Áreas del laboratorio", href: "/areas/" },
-  { label: "Armados", href: "/#armados" },
-  { label: "Upgrades", href: "/#upgrades" },
+  { label: "PCs armadas", href: "/pc-armadas/" },
+  { label: "Upgrades", href: "/upgrades/" },
   { label: "Cómo comprar", href: "/#como-comprar" },
   { label: "Garantía y envíos", href: "/politicas/" },
 ];
@@ -45,7 +45,7 @@ export function Header() {
                 {item.label}
               </a>
             ))}
-            <a className="btn btn-primary" href="/#armados">
+            <a className="btn btn-primary" href="/pc-armadas/">
               Construye tu máquina
             </a>
             <a className="btn btn-ghost" href={quote} target="_blank" rel="noopener">
@@ -65,7 +65,7 @@ export function Header() {
               </li>
             ))}
             <li className="nav-cta">
-              <a href="/#armados">Construye tu máquina</a>
+              <a href="/pc-armadas/">Construye tu máquina</a>
             </li>
           </ul>
         </div>

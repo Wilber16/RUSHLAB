@@ -19,9 +19,9 @@ export function Footer() {
           <div>
             <h2>Tienda</h2>
             <ul>
-              <li><a href="/#areas">Áreas del laboratorio</a></li>
-              <li><a href="/#armados">Armados RUSH BUILD</a></li>
-              <li><a href="/#upgrades">Upgrades</a></li>
+              <li><a href="/areas/">Áreas del laboratorio</a></li>
+              <li><a href="/pc-armadas/">PCs armadas</a></li>
+              <li><a href="/upgrades/">Upgrades</a></li>
               <li><a href="/#como-comprar">Cómo comprar</a></li>
             </ul>
           </div>

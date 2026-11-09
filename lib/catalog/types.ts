@@ -44,6 +44,8 @@ export interface Product {
   availability: Availability;
   /** true mientras el precio sea de ejemplo y no venga de Shopify */
   priceIsExample: boolean;
+  /** Ficha técnica completa (opcional). Si falta, se usan los specs. */
+  details?: { label: string; value: string }[];
 }
 
 export interface BuildPart {
@@ -54,12 +56,20 @@ export interface BuildPart {
 export interface Build {
   slug: string;
   name: string; // "RUSH BUILD Core"
-  tier: "core" | "pro" | "ultra";
+  tier: "starter" | "core" | "pro" | "ultra";
   purpose: string; // para qué sirve, en una línea
   target: string; // resolución / uso objetivo
+  /** Para qué sirve, en 3 puntos */
+  idealFor: string[];
+  /** Piezas principales (se muestran en las tarjetas) */
   parts: BuildPart[];
+  /** Resto de piezas (se muestran en el detalle) */
+  extraParts: BuildPart[];
   price: number; // en soles, con IGV
   /** true mientras el precio sea de ejemplo y no venga del proveedor/Shopify */
   priceIsExample: boolean;
+  /** Destacado con borde naranja */
   featured?: boolean;
+  /** Aparece en la página de inicio */
+  onHome?: boolean;
 }

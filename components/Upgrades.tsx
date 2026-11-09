@@ -1,5 +1,5 @@
 import { whatsappLink } from "@/lib/config";
-import { WhatsApp } from "./icons";
+import { ArrowRight, WhatsApp } from "./icons";
 
 const upgrades = [
   { title: "Más memoria", detail: "De 16 a 32 GB para juegos pesados y multitarea." },
@@ -30,7 +30,7 @@ export function Upgrades() {
             ))}
           </ul>
           <p className="byte-quote">“Lo rápido también es divertido.” BYTE</p>
-          <div>
+          <div className="hero-actions">
             <a
               className="btn btn-primary"
               href={whatsappLink("Hola RUSH LAB, quiero mejorar mi PC. Estas son sus piezas: ")}
@@ -39,6 +39,10 @@ export function Upgrades() {
             >
               <WhatsApp />
               Enviar las piezas de mi PC
+            </a>
+            <a className="btn btn-outline" href="/upgrades/">
+              Ver todos los upgrades
+              <ArrowRight />
             </a>
           </div>
         </div>

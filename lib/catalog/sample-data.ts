@@ -59,25 +59,55 @@ export const labAreas: LabArea[] = [
     name: "RUSH BUILD",
     description: "Arma tu PC completa con nuestra ayuda",
     icon: "build",
-    href: "/rush-build/",
+    href: "/pc-armadas/",
   },
 ];
 
 export const builds: Build[] = [
+  {
+    slug: "rush-build-starter",
+    name: "RUSH BUILD Starter",
+    tier: "starter",
+    purpose: "Tu primera PC gamer: juegos competitivos, clases y trabajo.",
+    target: "1080p medio",
+    idealFor: ["Valorant, LoL, CS2 y Fortnite", "Clases virtuales y ofimática", "Presupuesto ajustado con opción a mejorar"],
+    parts: [
+      { label: "Procesador", value: "Ryzen 5 5600" },
+      { label: "Tarjeta gráfica", value: "RX 7600 8 GB" },
+      { label: "Memoria", value: "16 GB DDR4" },
+      { label: "Almacenamiento", value: "SSD NVMe 1 TB" },
+    ],
+    extraParts: [
+      { label: "Placa madre", value: "B550M" },
+      { label: "Fuente de poder", value: "550 W 80 Plus Bronze" },
+      { label: "Gabinete", value: "Micro ATX con 3 ventiladores" },
+      { label: "Refrigeración", value: "Disipador de aire" },
+    ],
+    price: 2890,
+    priceIsExample: true,
+  },
   {
     slug: "rush-build-core",
     name: "RUSH BUILD Core",
     tier: "core",
     purpose: "Para jugar Valorant, Fortnite y títulos actuales sin problemas.",
     target: "1080p alto",
+    idealFor: ["Juegos actuales en 1080p con calidad alta", "Streaming básico", "Plataforma AM5 lista para mejorar"],
     parts: [
       { label: "Procesador", value: "Ryzen 5 7600" },
       { label: "Tarjeta gráfica", value: "RTX 5060 8 GB" },
       { label: "Memoria", value: "16 GB DDR5" },
       { label: "Almacenamiento", value: "SSD NVMe 1 TB" },
     ],
+    extraParts: [
+      { label: "Placa madre", value: "B650M" },
+      { label: "Fuente de poder", value: "650 W 80 Plus Bronze" },
+      { label: "Gabinete", value: "ATX con flujo de aire frontal" },
+      { label: "Refrigeración", value: "Disipador de aire de torre" },
+    ],
     price: 3890,
     priceIsExample: true,
+    onHome: true,
   },
   {
     slug: "rush-build-pro",
@@ -85,15 +115,23 @@ export const builds: Build[] = [
     tier: "pro",
     purpose: "Juegos AAA y streaming en la misma máquina.",
     target: "1440p alto",
+    idealFor: ["Juegos AAA en 1440p", "Jugar y transmitir a la vez", "Edición de video ocasional"],
     parts: [
       { label: "Procesador", value: "Ryzen 7 7800X3D" },
       { label: "Tarjeta gráfica", value: "RTX 5070 12 GB" },
       { label: "Memoria", value: "32 GB DDR5" },
       { label: "Almacenamiento", value: "SSD NVMe 1 TB" },
     ],
+    extraParts: [
+      { label: "Placa madre", value: "B650 WiFi" },
+      { label: "Fuente de poder", value: "750 W 80 Plus Gold" },
+      { label: "Gabinete", value: "ATX con 4 ventiladores" },
+      { label: "Refrigeración", value: "Líquida 240 mm" },
+    ],
     price: 4790,
     priceIsExample: true,
     featured: true,
+    onHome: true,
   },
   {
     slug: "rush-build-ultra",
@@ -101,14 +139,22 @@ export const builds: Build[] = [
     tier: "ultra",
     purpose: "Edición de video, IA local y juegos en 4K.",
     target: "1440p ultra / 4K",
+    idealFor: ["Juegos en 1440p ultra y 4K", "Edición de video y 3D", "Modelos de IA locales"],
     parts: [
       { label: "Procesador", value: "Ryzen 9 7900X" },
       { label: "Tarjeta gráfica", value: "RTX 5080 16 GB" },
       { label: "Memoria", value: "64 GB DDR5" },
       { label: "Almacenamiento", value: "SSD NVMe 2 TB" },
     ],
+    extraParts: [
+      { label: "Placa madre", value: "X670E WiFi" },
+      { label: "Fuente de poder", value: "850 W 80 Plus Gold modular" },
+      { label: "Gabinete", value: "ATX de flujo de aire alto" },
+      { label: "Refrigeración", value: "Líquida 360 mm" },
+    ],
     price: 6590,
     priceIsExample: true,
+    onHome: true,
   },
 ];
 
