@@ -6,8 +6,9 @@ const nav = [
   { label: "Áreas del laboratorio", href: "/areas/" },
   { label: "PCs armadas", href: "/pc-armadas/" },
   { label: "Upgrades", href: "/upgrades/" },
-  { label: "Cómo comprar", href: "/#como-comprar" },
-  { label: "Garantía y envíos", href: "/politicas/" },
+  { label: "Ofertas", href: "/ofertas/" },
+  { label: "Contacto", href: "/contacto/" },
+  
 ];
 
 export function Header() {
@@ -45,7 +46,7 @@ export function Header() {
                 {item.label}
               </a>
             ))}
-            <a className="btn btn-primary" href="/pc-armadas/">
+            <a className="btn btn-primary" href="/rush-build/">
               Construye tu máquina
             </a>
             <a className="btn btn-ghost" href={quote} target="_blank" rel="noopener">
@@ -65,7 +66,7 @@ export function Header() {
               </li>
             ))}
             <li className="nav-cta">
-              <a href="/pc-armadas/">Construye tu máquina</a>
+              <a href="/rush-build/">Construye tu máquina</a>
             </li>
           </ul>
         </div>

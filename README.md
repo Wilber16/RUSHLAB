@@ -34,6 +34,32 @@ lib/
 public/brand/       Imágenes de los personajes
 ```
 
+## Dónde se edita cada cosa
+
+| Qué | Archivo |
+| --- | --- |
+| WhatsApp, RUC, razón social, dirección, horario, redes | `lib/config.ts` |
+| Productos, áreas y PCs armadas (hasta conectar Shopify) | `lib/catalog/sample-data.ts` |
+| Piezas y precios del configurador RUSH BUILD | `lib/builder/parts.ts` |
+| Servicios de upgrade y lo que incluye cada PC | `lib/services.ts` |
+| Campaña de ofertas (fechas y beneficios) | `lib/campaign.ts` |
+| Fotos de entregas y reseñas reales | `lib/trust.ts` |
+| Textos de políticas | `app/politicas/*/page.tsx` |
+
+Los textos resaltados en amarillo en las políticas son datos que debes completar o decidir.
+Cuando tu contador o abogado revise las políticas, cambia `policiesReviewed` a `true` en `lib/config.ts`.
+
+## Activar el Libro de Reclamaciones
+
+El formulario necesita un servicio que reciba los reclamos y te los envíe por correo:
+
+1. Crea un formulario gratuito en https://formspree.io (o un servicio similar) con tu correo.
+2. Copia la dirección del formulario (ej.: `https://formspree.io/f/abcd1234`).
+3. En Vercel: Settings → Environment Variables → agrega `NEXT_PUBLIC_RECLAMOS_ENDPOINT` con esa dirección.
+4. Vuelve a publicar. El botón "Registrar reclamo" se activará.
+
+Mientras no esté configurado, el formulario muestra un aviso y el correo de la tienda.
+
 ## Pendientes
 
 - Reemplazar en `lib/config.ts` el número de WhatsApp, RUC, correo y redes.

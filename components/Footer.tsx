@@ -22,7 +22,9 @@ export function Footer() {
               <li><a href="/areas/">Áreas del laboratorio</a></li>
               <li><a href="/pc-armadas/">PCs armadas</a></li>
               <li><a href="/upgrades/">Upgrades</a></li>
-              <li><a href="/#como-comprar">Cómo comprar</a></li>
+              <li><a href="/rush-build/">RUSH BUILD</a></li>
+              <li><a href="/ofertas/">Ofertas</a></li>
+              <li><a href="/comparar/">Comparar productos</a></li>
             </ul>
           </div>
 
@@ -33,21 +35,22 @@ export function Footer() {
               <li><a href="/politicas/envios/">Envíos</a></li>
               <li><a href="/politicas/devoluciones/">Cambios y devoluciones</a></li>
               <li><a href="/politicas/privacidad/">Privacidad de datos</a></li>
+              <li><a href="/politicas/terminos/">Términos y condiciones</a></li>
             </ul>
           </div>
 
           <div>
-            <h2>Contacto</h2>
+            <h2>RUSH LAB</h2>
             <ul>
+              <li><a href="/nosotros/">Nosotros</a></li>
+              <li><a href="/galeria/">PCs entregadas</a></li>
+              <li><a href="/seguimiento/">Seguimiento de pedido</a></li>
+              <li><a href="/contacto/">Contacto</a></li>
               <li>
                 <a href={whatsappLink("Hola RUSH LAB")} target="_blank" rel="noopener">
                   WhatsApp {site.whatsappDisplay}
                 </a>
               </li>
-              <li>{site.email}</li>
-              <li><a href={site.social.instagram} target="_blank" rel="noopener">Instagram</a></li>
-              <li><a href={site.social.tiktok} target="_blank" rel="noopener">TikTok</a></li>
-              <li><a href={site.social.youtube} target="_blank" rel="noopener">YouTube</a></li>
             </ul>
           </div>
         </div>

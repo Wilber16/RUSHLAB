@@ -16,6 +16,10 @@ export function ProductGrid({ products, areaName }: { products: Product[]; areaN
   const [brand, setBrand] = useState<string>("all");
   const [onlyAvailable, setOnlyAvailable] = useState(false);
   const [sort, setSort] = useState<Sort>("relevance");
+  const [compare, setCompare] = useState<string[]>([]);
+  const MAX_COMPARE = 3;
+  const toggleCompare = (slug: string) =>
+    setCompare((c) => (c.includes(slug) ? c.filter((s) => s !== slug) : c.length < MAX_COMPARE ? [...c, slug] : c));
 
   const visible = useMemo(() => {
     const list = products.filter(
@@ -98,7 +102,15 @@ export function ProductGrid({ products, areaName }: { products: Product[]; areaN
       {visible.length > 0 ? (
         <div className="pgrid">
           {visible.map((p) => (
-            <ProductCard key={p.slug} product={p} />
+            <ProductCard
+              key={p.slug}
+              product={p}
+              compare={{
+                selected: compare.includes(p.slug),
+                disabled: compare.length >= MAX_COMPARE,
+                onToggle: () => toggleCompare(p.slug),
+              }}
+            />
           ))}
         </div>
       ) : (
@@ -107,6 +119,27 @@ export function ProductGrid({ products, areaName }: { products: Product[]; areaN
           <button type="button" className="btn btn-outline" onClick={clear}>
             Quitar filtros
           </button>
+        </div>
+      )}
+
+      {compare.length > 0 && (
+        <div className="compare-bar" role="region" aria-label="Productos para comparar">
+          <span>
+            {compare.length} de {MAX_COMPARE} para comparar
+            {compare.length === 1 && <small> · elige al menos uno más</small>}
+          </span>
+          <div className="compare-bar-actions">
+            <button type="button" className="link-btn" onClick={() => setCompare([])}>
+              Limpiar
+            </button>
+            <a
+              className={`btn btn-primary${compare.length < 2 ? " is-disabled" : ""}`}
+              href={compare.length < 2 ? undefined : `/comparar/?p=${compare.join(",")}`}
+              aria-disabled={compare.length < 2}
+            >
+              Comparar
+            </a>
+          </div>
         </div>
       )}
 

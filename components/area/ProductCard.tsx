@@ -8,7 +8,12 @@ const availabilityText: Record<Availability, string> = {
   sold_out: "Agotado por ahora",
 };
 
-export function ProductCard({ product }: { product: Product }) {
+interface CompareProps {
+  /** Si se pasa, la tarjeta muestra la casilla "Comparar" */
+  compare?: { selected: boolean; disabled: boolean; onToggle: () => void };
+}
+
+export function ProductCard({ product, compare }: { product: Product } & CompareProps) {
   const soldOut = product.availability === "sold_out";
   const href = `/producto/${product.slug}/`;
   const message = soldOut
@@ -22,7 +27,20 @@ export function ProductCard({ product }: { product: Product }) {
         <span className="pcard-kind">{product.kind}</span>
       </a>
       <div className="pcard-body">
-        <p className="pcard-brand">{product.brand}</p>
+        <div className="pcard-top">
+          <p className="pcard-brand">{product.brand}</p>
+          {compare && (
+            <label className="pcard-compare">
+              <input
+                type="checkbox"
+                checked={compare.selected}
+                disabled={compare.disabled && !compare.selected}
+                onChange={compare.onToggle}
+              />
+              Comparar
+            </label>
+          )}
+        </div>
         <h3 className="pcard-name">
           <a href={href}>{product.name}</a>
         </h3>
