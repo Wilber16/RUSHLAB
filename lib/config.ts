@@ -6,8 +6,8 @@ export const site = {
   slogan: "Tecnología fuera de control",
   concept: "Experimenta. Construye. Juega.",
   // Número de WhatsApp Business en formato internacional, sin + ni espacios.
-  whatsappNumber: "51900000000", // PENDIENTE
-  whatsappDisplay: "+51 900 000 000", // PENDIENTE
+  whatsappNumber: "51936764864",
+  whatsappDisplay: "+51 936 764 864",
   email: "hola@rushlab.pe", // PENDIENTE
   ruc: "En trámite", // PENDIENTE
   // Datos legales que aparecen en políticas y Libro de Reclamaciones
