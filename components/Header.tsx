@@ -36,6 +36,21 @@ export function Header() {
           </a>
         </div>
 
+        <details className="mobile-search">
+          <summary aria-label="Buscar">
+            <Search />
+          </summary>
+          <form className="search mobile-search-panel" role="search" action="/buscar/" method="get">
+            <label className="visually-hidden" htmlFor="q-m">
+              Buscar productos
+            </label>
+            <input id="q-m" name="q" type="search" placeholder="Busca un producto…" />
+            <button type="submit" aria-label="Buscar">
+              <Search />
+            </button>
+          </form>
+        </details>
+
         <details className="mobile-menu">
           <summary aria-label="Abrir menú">
             <Menu />

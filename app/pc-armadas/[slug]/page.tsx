@@ -4,6 +4,7 @@ import { getAllBuilds, getBuildBySlug } from "@/lib/catalog";
 import { formatPEN, whatsappLink } from "@/lib/config";
 import { includedWithEveryBuild } from "@/lib/services";
 import { BuildCard, tierWord } from "@/components/BuildCard";
+import { PayMethods } from "@/components/PayMethods";
 import { Check, Receipt, Shield, Truck, WhatsApp } from "@/components/icons";
 
 type Params = { slug: string };
@@ -95,6 +96,7 @@ export default async function BuildPage({ params }: { params: Promise<Params> })
               Lista en 2 a 4 días hábiles
             </li>
           </ul>
+          <PayMethods />
         </aside>
       </section>
 

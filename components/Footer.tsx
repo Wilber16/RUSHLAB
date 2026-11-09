@@ -1,6 +1,7 @@
 import { site, whatsappLink } from "@/lib/config";
 import { Logo } from "./Logo";
 import { Book, WhatsApp } from "./icons";
+import { showGallery } from "@/lib/trust";
 
 export function Footer() {
   const year = 2026;
@@ -43,7 +44,7 @@ export function Footer() {
             <h2>RUSH LAB</h2>
             <ul>
               <li><a href="/nosotros/">Nosotros</a></li>
-              <li><a href="/galeria/">PCs entregadas</a></li>
+              {showGallery && <li><a href="/galeria/">PCs entregadas</a></li>}
               <li><a href="/seguimiento/">Seguimiento de pedido</a></li>
               <li><a href="/contacto/">Contacto</a></li>
               <li>

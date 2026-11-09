@@ -5,6 +5,7 @@ import { Builds } from "@/components/Builds";
 import { Upgrades } from "@/components/Upgrades";
 import { HowToBuy } from "@/components/HowToBuy";
 import { Reviews } from "@/components/Reviews";
+import { TrustStrip } from "@/components/TrustStrip";
 
 export default async function HomePage() {
   const [areas, builds] = await Promise.all([getLabAreas(), getFeaturedBuilds()]);
@@ -12,6 +13,7 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+      <TrustStrip />
       <LabAreas areas={areas} />
       <Builds builds={builds} />
       <Upgrades />

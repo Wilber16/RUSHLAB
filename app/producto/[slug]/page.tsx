@@ -5,6 +5,7 @@ import type { Availability } from "@/lib/catalog";
 import { getKindInfo } from "@/lib/catalog/kind-info";
 import { formatPEN, whatsappLink } from "@/lib/config";
 import { ProductCard } from "@/components/area/ProductCard";
+import { PayMethods } from "@/components/PayMethods";
 import { Check, KindIcon, Receipt, Shield, Truck, WhatsApp } from "@/components/icons";
 
 type Params = { slug: string };
@@ -140,7 +141,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
                 Envío a todo el Perú
               </li>
             </ul>
-            <p className="product-pay">Pagas con Yape o transferencia. Confirmamos precio y stock antes de cobrar.</p>
+            <PayMethods />
           </div>
         </div>
       </section>

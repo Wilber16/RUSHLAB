@@ -41,7 +41,7 @@ export function BuildCard({ build }: { build: Build }) {
         </p>
         <div className="build-actions">
           <a
-            className={`btn ${build.featured ? "btn-primary" : "btn-outline"}`}
+            className={`btn ${build.featured ? "btn-primary" : "btn-ghost"}`}
             href={whatsappLink(`Hola RUSH LAB, quiero cotizar el ${build.name}.`)}
             target="_blank"
             rel="noopener"

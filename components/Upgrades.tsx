@@ -40,7 +40,7 @@ export function Upgrades() {
               <WhatsApp />
               Enviar las piezas de mi PC
             </a>
-            <a className="btn btn-outline" href="/upgrades/">
+            <a className="btn btn-ghost" href="/upgrades/">
               Ver todos los upgrades
               <ArrowRight />
             </a>

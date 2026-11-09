@@ -59,7 +59,7 @@ export function ProductCard({ product, compare }: { product: Product } & Compare
             {availabilityText[product.availability]}
           </p>
           <a
-            className={`btn ${soldOut ? "btn-ghost" : "btn-primary"}`}
+            className="btn btn-ghost"
             href={whatsappLink(message)}
             target="_blank"
             rel="noopener"

@@ -40,3 +40,7 @@ export const deliveries: Delivery[] = [
 export const reviews: Review[] = [
   // Copia aquí reseñas reales publicadas en Google u otras redes.
 ];
+
+/** La galería aparece en el menú solo cuando hay suficientes entregas reales. */
+export const MIN_DELIVERIES_TO_SHOW = 3;
+export const showGallery = deliveries.length >= MIN_DELIVERIES_TO_SHOW;

@@ -16,6 +16,7 @@ import {
 import { autoFix, checks, estimatedWatts, recommend, recommendedPsu, resolve, total, type Use } from "@/lib/builder/compat";
 import { formatPEN, whatsappLink } from "@/lib/config";
 import { Check, WhatsApp } from "../icons";
+import { PayMethods } from "../PayMethods";
 
 const uses: { id: Use; title: string; text: string }[] = [
   { id: "competitivo", title: "Gaming competitivo", text: "Valorant, CS2, Fortnite, LoL" },
@@ -243,6 +244,7 @@ export function RushBuilder() {
           <WhatsApp />
           {allOk ? "Pedir este armado" : "Consultar este armado"}
         </a>
+        <PayMethods note={false} />
         <p className="small muted">
           Precios de ejemplo. Confirmamos precio, stock y marcas exactas antes de cobrar.
         </p>

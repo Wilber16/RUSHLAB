@@ -14,6 +14,8 @@ export const site = {
   legalName: "[Tu nombre completo o razón social]", // PENDIENTE
   address: "[Dirección fiscal], Lima, Perú", // PENDIENTE
   hours: "Lunes a sábado, 9:00 a 19:00",
+  // Medios de pago que aceptas HOY. Agrega "Tarjeta de crédito o débito" cuando tengas pasarela.
+  paymentMethods: ["Yape", "Transferencia bancaria"],
   deliveryArea: "Lima Metropolitana (entrega coordinada) y todo el Perú por agencia",
   // Enlace a tu ficha de Google Business Profile para dejar reseñas
   googleReviewsUrl: "", // PENDIENTE

@@ -26,7 +26,7 @@ export function Builds({ builds }: { builds: Build[] }) {
               cobrar.
             </p>
           )}
-          <a className="btn btn-outline" href="/pc-armadas/">
+          <a className="btn btn-ghost" href="/pc-armadas/">
             Ver todas las PCs armadas
             <ArrowRight />
           </a>
