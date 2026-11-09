@@ -1,6 +1,7 @@
 import type { Availability, Product } from "@/lib/catalog";
 import { formatPEN, whatsappLink } from "@/lib/config";
 import { KindIcon, WhatsApp } from "../icons";
+import { AddToCart } from "../cart/AddToCart";
 import { imageSrcSet, sizedImage } from "@/lib/shopify/image";
 
 const availabilityText: Record<Availability, string> = {
@@ -70,6 +71,9 @@ export function ProductCard({ product, compare }: { product: Product } & Compare
             <span className="dot" aria-hidden="true" />
             {availabilityText[product.availability]}
           </p>
+          {product.variantId && !soldOut ? (
+            <AddToCart variantId={product.variantId} name={`${product.brand} ${product.name}`} variant="ghost" label="Agregar" />
+          ) : (
           <a
             className="btn btn-ghost"
             href={whatsappLink(message)}
@@ -79,6 +83,7 @@ export function ProductCard({ product, compare }: { product: Product } & Compare
             <WhatsApp />
             {soldOut ? "Avisarme cuando llegue" : "Cotizar"}
           </a>
+          )}
         </div>
       </div>
     </article>

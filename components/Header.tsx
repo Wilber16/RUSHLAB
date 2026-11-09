@@ -1,4 +1,5 @@
 import { site, whatsappLink } from "@/lib/config";
+import { CartLink } from "./cart/CartLink";
 import { Logo } from "./Logo";
 import { Menu, Search, WhatsApp } from "./icons";
 
@@ -50,6 +51,8 @@ export function Header() {
             </button>
           </form>
         </details>
+
+        <CartLink />
 
         <details className="mobile-menu">
           <summary aria-label="Abrir menú">

@@ -50,6 +50,8 @@ export interface Product {
   image?: ProductImage;
   /** Todas las fotos (viene de Shopify) */
   images?: ProductImage[];
+  /** Variante de Shopify para agregar al carrito. Sin ella, solo se puede cotizar. */
+  variantId?: string;
 }
 
 export interface ProductImage {

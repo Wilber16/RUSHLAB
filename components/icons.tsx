@@ -192,3 +192,29 @@ export function KindIcon({ kind, ...p }: { kind: string } & P) {
   const Icon = kindIcons[kind] ?? areaIcons.peripherals;
   return <Icon {...p} />;
 }
+
+export const CartIcon = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M3 4h2l2.4 11.2a1.5 1.5 0 0 0 1.5 1.2h8.7a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2" />
+    <circle cx="9.5" cy="20" r="1.3" />
+    <circle cx="17" cy="20" r="1.3" />
+  </svg>
+);
+
+export const Minus = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M5 12h14" />
+  </svg>
+);
+
+export const Plus = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M12 5v14M5 12h14" />
+  </svg>
+);
+
+export const Trash = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" />
+  </svg>
+);

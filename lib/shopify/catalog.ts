@@ -53,6 +53,7 @@ const PRODUCTS_QUERY = /* GraphQL */ `
         }
         variants(first: 1) {
           nodes {
+            id
             availableForSale
             currentlyNotInStock
             quantityAvailable
@@ -90,6 +91,7 @@ interface ShopifyProductNode {
   images: { nodes: ShopifyImage[] };
   variants: {
     nodes: {
+      id: string;
       availableForSale: boolean;
       currentlyNotInStock: boolean;
       quantityAvailable: number | null;
@@ -160,6 +162,7 @@ export function mapProduct(node: ShopifyProductNode): Product | null {
     priceIsExample: false,
     image: toImage(node.featuredImage, node.title) ?? images.at(0),
     images,
+    variantId: v.id,
   };
 }
 

@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { CartProvider } from "@/components/cart/CartProvider";
+import { CartToast } from "@/components/cart/CartToast";
+import { shopifyConfigured } from "@/lib/shopify/client";
 import "./globals.css";
 
 // Dirección pública de la web, para los enlaces de la imagen al compartir.
@@ -44,9 +47,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <CartProvider enabled={shopifyConfigured()}>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <CartToast />
+        </CartProvider>
       </body>
     </html>
   );

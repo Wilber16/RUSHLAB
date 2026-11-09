@@ -7,6 +7,7 @@ import { formatPEN, whatsappLink } from "@/lib/config";
 import { imageSrcSet, sizedImage } from "@/lib/shopify/image";
 import { ProductCard } from "@/components/area/ProductCard";
 import { PayMethods } from "@/components/PayMethods";
+import { AddToCart } from "@/components/cart/AddToCart";
 import { Check, KindIcon, Receipt, Shield, Truck, WhatsApp } from "@/components/icons";
 
 type Params = { slug: string };
@@ -132,8 +133,9 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             </div>
 
             <div className="product-ctas">
+              {product.variantId && !soldOut && <AddToCart variantId={product.variantId} name={fullName} />}
               <a
-                className={`btn ${soldOut ? "btn-outline" : "btn-primary"}`}
+                className={`btn ${soldOut ? "btn-outline" : product.variantId ? "btn-ghost" : "btn-primary"}`}
                 href={whatsappLink(
                   soldOut
                     ? `Hola RUSH LAB, avísenme cuando tengan el ${fullName}.`
@@ -143,7 +145,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
                 rel="noopener"
               >
                 <WhatsApp />
-                {soldOut ? "Avisarme cuando llegue" : "Cotizar por WhatsApp"}
+                {soldOut ? "Avisarme cuando llegue" : product.variantId ? "Consultar por WhatsApp" : "Cotizar por WhatsApp"}
               </a>
               <a
                 className="btn btn-ghost"
