@@ -4719,3 +4719,43 @@ select {
     grid-column: 2;
   }
 }
+
+/* Logos de marca (metaobjetos de Shopify) */
+.brand-tile.has-logo {
+  justify-items: start;
+  gap: 8px;
+}
+
+.brand-logo {
+  display: block;
+  height: 34px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.brand-hero-logo {
+  margin: 0;
+}
+
+.brand-hero-logo img {
+  display: block;
+  height: 64px;
+  width: auto;
+  max-width: min(320px, 100%);
+  object-fit: contain;
+  object-position: left center;
+}
+
+.brand-list > li {
+  display: flex;
+}
+
+.brand-list .brand-tile {
+  align-content: center;
+}
+
+.brand-tile .brand-logo {
+  height: 28px;
+}

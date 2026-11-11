@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { Brand } from "@/lib/catalog";
+import { sizedImage } from "@/lib/shopify/image";
 
 const SPEED = 30; // píxeles por segundo
 const LOOP_MIN = 5; // con menos marcas no se repite la fila (se vería forzado)
@@ -68,8 +69,22 @@ export function BrandCarousel({ brands }: { brands: Brand[] }) {
   const items = (copy: boolean) =>
     brands.map((b) => (
       <li key={`${copy ? "c-" : ""}${b.slug}`}>
-        <a className="brand-tile" href={`/marca/${b.slug}/`} tabIndex={copy ? -1 : undefined}>
-          <span className="brand-name">{b.name}</span>
+        <a
+          className={`brand-tile${b.logo ? " has-logo" : ""}`}
+          href={`/marca/${b.slug}/`}
+          tabIndex={copy ? -1 : undefined}
+        >
+          {b.logo ? (
+            <img
+              className="brand-logo"
+              src={sizedImage(b.logo.url, 320)}
+              alt={b.name}
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <span className="brand-name">{b.name}</span>
+          )}
           <span className="brand-count">
             {b.count} {b.count === 1 ? "producto" : "productos"}
           </span>

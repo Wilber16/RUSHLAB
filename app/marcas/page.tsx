@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getBrands } from "@/lib/catalog";
+import { sizedImage } from "@/lib/shopify/image";
 
 export const revalidate = 300;
 
@@ -27,8 +28,12 @@ export default async function BrandsIndex() {
         <ul className="brand-grid">
           {brands.map((b) => (
             <li key={b.slug}>
-              <a className="brand-tile" href={`/marca/${b.slug}/`}>
-                <span className="brand-name">{b.name}</span>
+              <a className={`brand-tile${b.logo ? " has-logo" : ""}`} href={`/marca/${b.slug}/`}>
+                {b.logo ? (
+                  <img className="brand-logo" src={sizedImage(b.logo.url, 320)} alt={b.name} loading="lazy" />
+                ) : (
+                  <span className="brand-name">{b.name}</span>
+                )}
                 <span className="brand-count">
                   {b.count} {b.count === 1 ? "producto" : "productos"}
                 </span>

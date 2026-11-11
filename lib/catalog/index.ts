@@ -8,11 +8,12 @@
 // Las áreas, los textos y los armados siguen en sample-data.ts.
 
 import { cache } from "react";
-import type { Build, LabArea, Product } from "./types";
+import type { Build, LabArea, Product, ProductImage } from "./types";
 import { builds, labAreas, products as sampleProducts } from "./sample-data";
 import { getShopifyProducts } from "@/lib/shopify/catalog";
 import { shopifyConfigured } from "@/lib/shopify/client";
 import { complementsFor } from "@/lib/complements";
+import { getBrandLogos } from "@/lib/shopify/brands";
 
 export type CatalogSource = "shopify" | "sample";
 
@@ -72,7 +73,7 @@ export async function getRelatedProducts(product: Product, limit = 4): Promise<P
     .slice(0, limit);
 }
 
-export type Brand = { name: string; slug: string; count: number };
+export type Brand = { name: string; slug: string; count: number; logo?: ProductImage };
 
 /** "Cooler Master" → "cooler-master". */
 export function brandSlug(name: string): string {
@@ -93,6 +94,11 @@ export async function getBrands(): Promise<Brand[]> {
     const b = map.get(slug) ?? { name: p.brand.trim(), slug, count: 0 };
     b.count += 1;
     map.set(slug, b);
+  }
+  // Logos cargados en Shopify (metaobjetos "marca"), si existen
+  for (const { name, logo } of await getBrandLogos()) {
+    const b = map.get(brandSlug(name));
+    if (b) b.logo = logo;
   }
   return [...map.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 }

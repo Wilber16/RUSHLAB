@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getBrandBySlug, getBrands, getProductsByBrand } from "@/lib/catalog";
 import { ProductGrid } from "@/components/area/ProductGrid";
+import { sizedImage } from "@/lib/shopify/image";
 
 type Params = { slug: string };
 
@@ -38,9 +39,16 @@ export default async function BrandPage({ params }: { params: Promise<Params> })
           <span aria-current="page">{brand.name}</span>
         </nav>
         <div className="section-head brand-head">
-          <h1 className="page-title brand-title">{brand.name}</h1>
+          {brand.logo ? (
+            <h1 className="brand-hero-logo">
+              <img src={sizedImage(brand.logo.url, 480)} alt={brand.name} />
+            </h1>
+          ) : (
+            <h1 className="page-title brand-title">{brand.name}</h1>
+          )}
           <p>
-            Todo lo de {brand.name} que tenemos en el laboratorio, con precio en soles y stock confirmado antes de pagar.
+            Todo lo de {brand.name} que tenemos en el laboratorio, con precio en soles y stock confirmado antes de
+            pagar.
           </p>
         </div>
         <ProductGrid products={products} areaName={brand.name} />
