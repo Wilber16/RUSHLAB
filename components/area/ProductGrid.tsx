@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Product } from "@/lib/catalog";
 import { ProductCard } from "./ProductCard";
+import { compareValues, facets, kindMatches } from "@/lib/facets";
 
 type Sort = "relevance" | "price-asc" | "price-desc";
 
@@ -13,6 +14,7 @@ export function ProductGrid({ products, areaName }: { products: Product[]; areaN
   const brands = useMemo(() => [...new Set(products.map((p) => p.brand))].sort(), [products]);
 
   const [kind, setKind] = useState<string>("all");
+  const [specs, setSpecs] = useState<Record<string, string>>({});
   const [brand, setBrand] = useState<string>("all");
   const [onlyAvailable, setOnlyAvailable] = useState(false);
   const [sort, setSort] = useState<Sort>("relevance");
@@ -21,22 +23,53 @@ export function ProductGrid({ products, areaName }: { products: Product[]; areaN
   const toggleCompare = (slug: string) =>
     setCompare((c) => (c.includes(slug) ? c.filter((s) => s !== slug) : c.length < MAX_COMPARE ? [...c, slug] : c));
 
+  // Valores técnicos de cada producto (socket, memoria, capacidad…)
+  const productSpecs = useMemo(
+    () =>
+      new Map(
+        products.map((p) => {
+          const text = `${p.name} ${p.specs.join(" ")}`;
+          return [p.slug, Object.fromEntries(facets.map((f) => [f.id, kindMatches(f, p.kind) ? f.values(text) : []]))];
+        }),
+      ),
+    [products],
+  );
+
+  // Filtros técnicos que aplican al tipo elegido (o a todos si el área es de un solo tipo)
+  const activeFacets = useMemo(() => {
+    const inScope = products.filter((p) => kind === "all" || p.kind === kind);
+    return facets
+      .filter((f) => inScope.length > 0 && inScope.every((p) => kindMatches(f, p.kind)))
+      .map((f) => ({
+        ...f,
+        options: [...new Set(inScope.flatMap((p) => productSpecs.get(p.slug)?.[f.id] ?? []))].sort(compareValues),
+      }))
+      .filter((f) => f.options.length > 1);
+  }, [products, kind, productSpecs]);
+
+  const chooseKind = (k: string) => {
+    setKind(k);
+    setSpecs({});
+  };
+
   const visible = useMemo(() => {
     const list = products.filter(
       (p) =>
         (kind === "all" || p.kind === kind) &&
         (brand === "all" || p.brand === brand) &&
-        (!onlyAvailable || p.availability !== "sold_out"),
+        (!onlyAvailable || p.availability !== "sold_out") &&
+        activeFacets.every((f) => !specs[f.id] || (productSpecs.get(p.slug)?.[f.id] ?? []).includes(specs[f.id])),
     );
     if (sort === "price-asc") return [...list].sort((a, b) => a.price - b.price);
     if (sort === "price-desc") return [...list].sort((a, b) => b.price - a.price);
     // Relevancia: primero lo disponible, luego bajo pedido, al final agotados
     return [...list].sort((a, b) => availabilityRank[a.availability] - availabilityRank[b.availability]);
-  }, [products, kind, brand, onlyAvailable, sort]);
+  }, [products, kind, brand, onlyAvailable, sort, activeFacets, specs, productSpecs]);
 
-  const filtered = kind !== "all" || brand !== "all" || onlyAvailable;
+  const filtered = kind !== "all" || brand !== "all" || onlyAvailable || Object.values(specs).some(Boolean);
   const clear = () => {
     setKind("all");
+    setSpecs({});
     setBrand("all");
     setOnlyAvailable(false);
   };
@@ -60,11 +93,11 @@ export function ProductGrid({ products, areaName }: { products: Product[]; areaN
       <div className="filters">
         {kinds.length > 1 && (
           <div className="chips" role="group" aria-label="Tipo de producto">
-            <button type="button" aria-pressed={kind === "all"} onClick={() => setKind("all")}>
+            <button type="button" aria-pressed={kind === "all"} onClick={() => chooseKind("all")}>
               Todo
             </button>
             {kinds.map((k) => (
-              <button key={k} type="button" aria-pressed={kind === k} onClick={() => setKind(k)}>
+              <button key={k} type="button" aria-pressed={kind === k} onClick={() => chooseKind(k)}>
                 {k}
               </button>
             ))}
@@ -84,6 +117,23 @@ export function ProductGrid({ products, areaName }: { products: Product[]; areaN
               </select>
             </label>
           )}
+          {activeFacets.map((f) => (
+            <label key={f.id} className="select-label">
+              <span className="visually-hidden">{f.label}</span>
+              <select
+                value={specs[f.id] ?? ""}
+                onChange={(e) => setSpecs((s) => ({ ...s, [f.id]: e.target.value }))}
+                aria-label={f.label}
+              >
+                <option value="">{f.label}: todos</option>
+                {f.options.map((o) => (
+                  <option key={o} value={o}>
+                    {f.label}: {o}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ))}
           <label className="toggle">
             <input
               id="only-available"

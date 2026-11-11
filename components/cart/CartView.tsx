@@ -5,6 +5,7 @@ import { sizedImage } from "@/lib/shopify/image";
 import { KindIcon, Minus, Plus, Trash, WhatsApp } from "../icons";
 import { PayMethods } from "../PayMethods";
 import { useCart } from "./CartProvider";
+import { CartSuggestions } from "./CartSuggestions";
 
 const MAX_QTY = 10;
 
@@ -49,61 +50,64 @@ export function CartView() {
 
   return (
     <div className="cart">
-      <ul className="cart-lines">
-        {cart.lines.map((line) => {
-          const working = busy === line.id;
-          return (
-            <li key={line.id} className={`cart-line${working ? " is-busy" : ""}`}>
-              <a className="cart-thumb" href={`/producto/${line.handle}/`} tabIndex={-1} aria-hidden="true">
-                {line.image ? (
-                  <img src={sizedImage(line.image.url, 160)} alt="" width={160} height={120} />
-                ) : (
-                  <KindIcon kind={line.kind} />
-                )}
-              </a>
-              <div className="cart-line-info">
-                <p className="pcard-brand">{line.brand}</p>
-                <a className="cart-line-name" href={`/producto/${line.handle}/`}>
-                  {line.title}
+      <div className="cart-main">
+        <ul className="cart-lines">
+          {cart.lines.map((line) => {
+            const working = busy === line.id;
+            return (
+              <li key={line.id} className={`cart-line${working ? " is-busy" : ""}`}>
+                <a className="cart-thumb" href={`/producto/${line.handle}/`} tabIndex={-1} aria-hidden="true">
+                  {line.image ? (
+                    <img src={sizedImage(line.image.url, 160)} alt="" width={160} height={120} />
+                  ) : (
+                    <KindIcon kind={line.kind} />
+                  )}
                 </a>
-                <p className="small muted">{formatPEN(line.unitPrice)} c/u</p>
-                {!line.availableForSale && (
-                  <p className="form-error small">Ya no está disponible. Quítalo para continuar.</p>
-                )}
-              </div>
-              <div className="qty" role="group" aria-label={`Cantidad de ${line.title}`}>
+                <div className="cart-line-info">
+                  <p className="pcard-brand">{line.brand}</p>
+                  <a className="cart-line-name" href={`/producto/${line.handle}/`}>
+                    {line.title}
+                  </a>
+                  <p className="small muted">{formatPEN(line.unitPrice)} c/u</p>
+                  {!line.availableForSale && (
+                    <p className="form-error small">Ya no está disponible. Quítalo para continuar.</p>
+                  )}
+                </div>
+                <div className="qty" role="group" aria-label={`Cantidad de ${line.title}`}>
+                  <button
+                    type="button"
+                    onClick={() => update(line.id, line.quantity - 1)}
+                    disabled={working}
+                    aria-label="Quitar una unidad"
+                  >
+                    <Minus />
+                  </button>
+                  <span aria-live="polite">{line.quantity}</span>
+                  <button
+                    type="button"
+                    onClick={() => update(line.id, line.quantity + 1)}
+                    disabled={working || line.quantity >= MAX_QTY}
+                    aria-label="Agregar una unidad"
+                  >
+                    <Plus />
+                  </button>
+                </div>
+                <p className="cart-line-total">{formatPEN(line.lineTotal)}</p>
                 <button
                   type="button"
-                  onClick={() => update(line.id, line.quantity - 1)}
+                  className="cart-remove"
+                  onClick={() => remove(line.id)}
                   disabled={working}
-                  aria-label="Quitar una unidad"
+                  aria-label={`Quitar ${line.title} del carrito`}
                 >
-                  <Minus />
+                  <Trash />
                 </button>
-                <span aria-live="polite">{line.quantity}</span>
-                <button
-                  type="button"
-                  onClick={() => update(line.id, line.quantity + 1)}
-                  disabled={working || line.quantity >= MAX_QTY}
-                  aria-label="Agregar una unidad"
-                >
-                  <Plus />
-                </button>
-              </div>
-              <p className="cart-line-total">{formatPEN(line.lineTotal)}</p>
-              <button
-                type="button"
-                className="cart-remove"
-                onClick={() => remove(line.id)}
-                disabled={working}
-                aria-label={`Quitar ${line.title} del carrito`}
-              >
-                <Trash />
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+              </li>
+            );
+          })}
+        </ul>
+        <CartSuggestions lines={cart.lines} />
+      </div>
 
       <aside className="cart-summary" aria-label="Resumen">
         <h2>Resumen</h2>

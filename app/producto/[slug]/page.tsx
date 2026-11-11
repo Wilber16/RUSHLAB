@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllProducts, getAreaBySlug, getProductBySlug, getRelatedProducts, brandSlug } from "@/lib/catalog";
+import {
+  getAllProducts,
+  getAreaBySlug,
+  getProductBySlug,
+  getRelatedProducts,
+  brandSlug,
+  getComplements,
+} from "@/lib/catalog";
 import type { Availability } from "@/lib/catalog";
 import { getKindInfo } from "@/lib/catalog/kind-info";
 import { formatPEN, whatsappLink } from "@/lib/config";
@@ -10,6 +17,7 @@ import { PayMethods } from "@/components/PayMethods";
 import { AddToCart } from "@/components/cart/AddToCart";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { BuyBar } from "@/components/product/BuyBar";
+import { RecentlyViewed } from "@/components/RecentlyViewed";
 import { JsonLd } from "@/components/JsonLd";
 import { absoluteUrl } from "@/lib/site-url";
 import { Check, KindIcon, Receipt, Shield, Truck, WhatsApp } from "@/components/icons";
@@ -61,7 +69,13 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const [area, related] = await Promise.all([getAreaBySlug(product.area), getRelatedProducts(product)]);
+  const [area, relatedAll, complements] = await Promise.all([
+    getAreaBySlug(product.area),
+    getRelatedProducts(product, 8),
+    getComplements(product),
+  ]);
+  const complementSlugs = new Set(complements.map((c) => c.product.slug));
+  const related = relatedAll.filter((p) => !complementSlugs.has(p.slug)).slice(0, 4);
   const info = getKindInfo(product.kind);
   const stock = availabilityCopy[product.availability];
   const soldOut = product.availability === "sold_out";
@@ -260,6 +274,20 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         </div>
       </section>
 
+      {complements.length > 0 && (
+        <section className="product-related" aria-labelledby="complements-title">
+          <div className="section-head">
+            <h2 id="complements-title">Completa tu equipo</h2>
+            <p>Piezas que van con {fullName}. Revisamos socket y tipo de memoria por ti.</p>
+          </div>
+          <div className="pgrid">
+            {complements.map((c) => (
+              <ProductCard key={c.product.slug} product={c.product} note={c.reason} />
+            ))}
+          </div>
+        </section>
+      )}
+
       {related.length > 0 && (
         <section className="product-related" aria-labelledby="related-title">
           <div className="section-head">
@@ -277,6 +305,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </div>
         </section>
       )}
+      <RecentlyViewed current={`/producto/${product.slug}/`} limit={4} />
     </div>
   );
 }

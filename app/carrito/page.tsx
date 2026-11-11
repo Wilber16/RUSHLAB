@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CartView } from "@/components/cart/CartView";
+import { RecentlyViewed } from "@/components/RecentlyViewed";
 
 export const metadata: Metadata = {
   title: "Tu carrito · RUSH LAB",
@@ -17,6 +18,7 @@ export default function CarritoPage() {
         </nav>
         <h1 className="page-title cart-title">Tu carrito</h1>
         <CartView />
+        <RecentlyViewed />
       </div>
     </section>
   );

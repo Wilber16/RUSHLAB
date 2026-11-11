@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { SearchEntry } from "@/app/api/buscar/route";
+import { loadIndex } from "@/lib/search-index";
 import { formatPEN } from "@/lib/config";
 import { matches, normalize } from "@/lib/search";
 import { KindIcon, Search } from "./icons";
@@ -9,17 +10,6 @@ import { KindIcon, Search } from "./icons";
 const MAX = 6;
 const rank = { in_stock: 0, on_order: 1, sold_out: 2 } as const;
 const stockText = { in_stock: "Disponible", on_order: "Bajo pedido", sold_out: "Agotado" } as const;
-
-let indexPromise: Promise<SearchEntry[]> | null = null;
-function loadIndex(): Promise<SearchEntry[]> {
-  indexPromise ??= fetch("/api/buscar/")
-    .then((r) => (r.ok ? r.json() : []))
-    .catch(() => {
-      indexPromise = null;
-      return [];
-    });
-  return indexPromise;
-}
 
 /** Buscador con sugerencias mientras escribes. Enter sin elegir nada abre la página de resultados. */
 export function SearchBox({

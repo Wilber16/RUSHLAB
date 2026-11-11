@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ASSEMBLY_FEE,
   boards,
@@ -13,9 +13,18 @@ import {
   storages,
   type Selection,
 } from "@/lib/builder/parts";
-import { autoFix, checks, estimatedWatts, recommend, recommendedPsu, resolve, total, type Use } from "@/lib/builder/compat";
+import {
+  autoFix,
+  checks,
+  estimatedWatts,
+  recommend,
+  recommendedPsu,
+  resolve,
+  total,
+  type Use,
+} from "@/lib/builder/compat";
 import { formatPEN, whatsappLink } from "@/lib/config";
-import { Check, WhatsApp } from "../icons";
+import { Check, Share, WhatsApp } from "../icons";
 import { PayMethods } from "../PayMethods";
 
 const uses: { id: Use; title: string; text: string }[] = [
@@ -43,10 +52,88 @@ const labels: Record<Key, string> = {
   cooler: "Refrigeración",
 };
 
+const catalogs: Record<Key, { id: string }[]> = {
+  cpu: cpus,
+  board: boards,
+  ram: rams,
+  gpu: gpus,
+  storage: storages,
+  psu: psus,
+  case: cases,
+  cooler: coolers,
+};
+const keys = Object.keys(labels) as Key[];
+
+/** Lee un armado compartido: /rush-build/?u=aaa&b=6000&arma=cpu.board.ram... */
+function readShared(): { use: Use; budget: number; sel: Selection } | null {
+  const q = new URLSearchParams(window.location.search);
+  const ids = q.get("arma")?.split(".");
+  if (!ids || ids.length !== keys.length) return null;
+  const sel = {} as Selection;
+  for (const [i, k] of keys.entries()) {
+    if (!catalogs[k].some((p) => p.id === ids[i])) return null;
+    sel[k] = ids[i];
+  }
+  const u = q.get("u") as Use;
+  const b = Number(q.get("b"));
+  return {
+    use: uses.some((x) => x.id === u) ? u : "aaa",
+    budget: b >= MIN && b <= MAX ? Math.round(b / STEP) * STEP : 6000,
+    sel: autoFix(sel),
+  };
+}
+
+function shareQuery(use: Use, budget: number, sel: Selection): string {
+  return `?u=${use}&b=${budget}&arma=${keys.map((k) => sel[k]).join(".")}`;
+}
+
 export function RushBuilder() {
   const [use, setUse] = useState<Use>("aaa");
   const [budget, setBudget] = useState(6000);
   const [sel, setSel] = useState<Selection>(() => recommend(6000, "aaa"));
+  const [shareState, setShareState] = useState<"idle" | "copied" | "error">("idle");
+  const loaded = useRef(false);
+  const [base, setBase] = useState("");
+
+  // Si llega un enlace compartido, abre ese mismo armado
+  useEffect(() => {
+    const shared = readShared();
+    if (shared) {
+      setUse(shared.use);
+      setBudget(shared.budget);
+      setSel(shared.sel);
+    }
+    loaded.current = true;
+    setBase(`${window.location.origin}${window.location.pathname}`);
+  }, []);
+
+  // La dirección del navegador siempre refleja el armado actual
+  useEffect(() => {
+    if (!loaded.current) return;
+    window.history.replaceState(null, "", `${window.location.pathname}${shareQuery(use, budget, sel)}`);
+  }, [use, budget, sel]);
+
+  const shareUrl = () => `${base}${shareQuery(use, budget, sel)}`;
+
+  const share = async () => {
+    const url = shareUrl();
+    if (navigator.share && window.matchMedia("(pointer: coarse)").matches) {
+      try {
+        await navigator.share({ title: "Mi PC en RUSH BUILD", text: `Mira la PC que armé: ${formatPEN(sum)}`, url });
+        return;
+      } catch {
+        // cancelado: no pasa nada
+        return;
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareState("copied");
+    } catch {
+      setShareState("error");
+    }
+    window.setTimeout(() => setShareState("idle"), 4000);
+  };
 
   const parts = useMemo(() => resolve(sel), [sel]);
   const result = useMemo(() => checks(sel), [sel]);
@@ -101,6 +188,7 @@ export function RushBuilder() {
     `Total estimado: ${formatPEN(sum)} (con armado y pruebas)`,
     `Uso: ${uses.find((u) => u.id === use)?.title}`,
     "¿Me confirman precio y stock?",
+    ...(base ? ["", `Mi armado: ${shareUrl()}`] : []),
   ].join("\n");
 
   return (
@@ -165,9 +253,7 @@ export function RushBuilder() {
           <h2 id="b-step3">
             <span className="step-num">3</span> Personaliza tu experimento
           </h2>
-          <p className="small muted">
-            Si cambias una pieza, ajustamos solas las que dejarían de ser compatibles.
-          </p>
+          <p className="small muted">Si cambias una pieza, ajustamos solas las que dejarían de ser compatibles.</p>
           <div className="part-list">
             {order.map((key) => (
               <label key={key} className="part-row">
@@ -177,7 +263,11 @@ export function RushBuilder() {
                     const reason = why[key]?.(opt.id) ?? "";
                     const delta = opt.price - parts[key].price;
                     const deltaText =
-                      opt.id === sel[key] ? "" : delta === 0 ? " (mismo precio)" : ` (${delta > 0 ? "+" : "−"}${formatPEN(Math.abs(delta))})`;
+                      opt.id === sel[key]
+                        ? ""
+                        : delta === 0
+                          ? " (mismo precio)"
+                          : ` (${delta > 0 ? "+" : "−"}${formatPEN(Math.abs(delta))})`;
                     return (
                       <option key={opt.id} value={opt.id} disabled={Boolean(reason) && key !== "cpu"}>
                         {opt.name}
@@ -219,13 +309,21 @@ export function RushBuilder() {
           <strong>{formatPEN(sum)}</strong>
         </div>
         <p className={`sum-budget ${diff >= 0 ? "under" : "over"}`}>
-          {diff >= 0 ? `${formatPEN(diff)} por debajo de tu presupuesto` : `${formatPEN(-diff)} por encima de tu presupuesto`}
+          {diff >= 0
+            ? `${formatPEN(diff)} por debajo de tu presupuesto`
+            : `${formatPEN(-diff)} por encima de tu presupuesto`}
         </p>
 
         <ul className="compat">
           {result.map((c) => (
             <li key={c.label} className={c.ok ? "ok" : "bad"}>
-              {c.ok ? <Check /> : <span className="x" aria-hidden="true">!</span>}
+              {c.ok ? (
+                <Check />
+              ) : (
+                <span className="x" aria-hidden="true">
+                  !
+                </span>
+              )}
               <span>
                 <strong>{c.label}</strong>
                 <small>{c.detail}</small>
@@ -233,7 +331,9 @@ export function RushBuilder() {
             </li>
           ))}
         </ul>
-        <p className="small muted">Consumo estimado: {estimatedWatts(sel)} W. Fuente recomendada: {needPsu} W o más.</p>
+        <p className="small muted">
+          Consumo estimado: {estimatedWatts(sel)} W. Fuente recomendada: {needPsu} W o más.
+        </p>
 
         <a
           className={`btn ${allOk ? "btn-primary" : "btn-outline"}`}
@@ -244,10 +344,20 @@ export function RushBuilder() {
           <WhatsApp />
           {allOk ? "Pedir este armado" : "Consultar este armado"}
         </a>
+        <button type="button" className="btn btn-ghost" onClick={share}>
+          <Share />
+          {shareState === "copied" ? "Enlace copiado" : "Compartir este armado"}
+        </button>
+        {shareState === "error" && (
+          <p className="small muted" role="status">
+            No pudimos copiar el enlace. Cópialo desde la barra de direcciones: ya incluye tu armado.
+          </p>
+        )}
+        <span className="visually-hidden" role="status">
+          {shareState === "copied" ? "Enlace del armado copiado" : ""}
+        </span>
         <PayMethods note={false} />
-        <p className="small muted">
-          Precios de ejemplo. Confirmamos precio, stock y marcas exactas antes de cobrar.
-        </p>
+        <p className="small muted">Precios de ejemplo. Confirmamos precio, stock y marcas exactas antes de cobrar.</p>
       </aside>
     </div>
   );

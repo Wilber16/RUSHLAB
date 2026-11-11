@@ -14,6 +14,8 @@ export type SearchEntry = {
   price: number;
   availability: "in_stock" | "on_order" | "sold_out";
   image?: string;
+  /** Para agregar al carrito desde las sugerencias */
+  variantId?: string;
   /** Texto donde se busca: marca, nombre, tipo y especificaciones */
   text: string;
 };
@@ -29,6 +31,7 @@ export async function GET() {
       price: p.price,
       availability: p.availability,
       image: p.image ? sizedImage(p.image.url, 120) : undefined,
+      variantId: p.variantId,
       text: `${p.brand} ${p.name} ${p.kind} ${p.specs.join(" ")}`,
     })),
     ...builds.map((b) => ({

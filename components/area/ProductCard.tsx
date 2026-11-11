@@ -11,11 +11,13 @@ const availabilityText: Record<Availability, string> = {
 };
 
 interface CompareProps {
+  /** Nota corta sobre la tarjeta, por ejemplo "Compatible con AM5" */
+  note?: string;
   /** Si se pasa, la tarjeta muestra la casilla "Comparar" */
   compare?: { selected: boolean; disabled: boolean; onToggle: () => void };
 }
 
-export function ProductCard({ product, compare }: { product: Product } & CompareProps) {
+export function ProductCard({ product, compare, note }: { product: Product } & CompareProps) {
   const soldOut = product.availability === "sold_out";
   const href = `/producto/${product.slug}/`;
   const message = soldOut
@@ -54,6 +56,7 @@ export function ProductCard({ product, compare }: { product: Product } & Compare
             </label>
           )}
         </div>
+        {note && <p className="pcard-note">{note}</p>}
         <h3 className="pcard-name">
           <a href={href}>{product.name}</a>
         </h3>
@@ -72,17 +75,17 @@ export function ProductCard({ product, compare }: { product: Product } & Compare
             {availabilityText[product.availability]}
           </p>
           {product.variantId && !soldOut ? (
-            <AddToCart variantId={product.variantId} name={`${product.brand} ${product.name}`} variant="ghost" label="Agregar" />
+            <AddToCart
+              variantId={product.variantId}
+              name={`${product.brand} ${product.name}`}
+              variant="ghost"
+              label="Agregar"
+            />
           ) : (
-          <a
-            className="btn btn-ghost"
-            href={whatsappLink(message)}
-            target="_blank"
-            rel="noopener"
-          >
-            <WhatsApp />
-            {soldOut ? "Avisarme cuando llegue" : "Cotizar"}
-          </a>
+            <a className="btn btn-ghost" href={whatsappLink(message)} target="_blank" rel="noopener">
+              <WhatsApp />
+              {soldOut ? "Avisarme cuando llegue" : "Cotizar"}
+            </a>
           )}
         </div>
       </div>

@@ -12,6 +12,7 @@ import type { Build, LabArea, Product } from "./types";
 import { builds, labAreas, products as sampleProducts } from "./sample-data";
 import { getShopifyProducts } from "@/lib/shopify/catalog";
 import { shopifyConfigured } from "@/lib/shopify/client";
+import { complementsFor } from "@/lib/complements";
 
 export type CatalogSource = "shopify" | "sample";
 
@@ -102,6 +103,19 @@ export async function getBrandBySlug(slug: string): Promise<Brand | undefined> {
 
 export async function getProductsByBrand(slug: string): Promise<Product[]> {
   return (await allProducts()).filter((p) => brandSlug(p.brand) === slug);
+}
+
+/** Piezas que conviene sumar a este producto (socket y memoria revisados). */
+export async function getComplements(product: Product, limit = 4): Promise<{ product: Product; reason?: string }[]> {
+  const toItem = (p: Product) => ({
+    key: p.slug,
+    kind: p.kind,
+    availability: p.availability,
+    text: `${p.name} ${p.specs.join(" ")}`,
+    product: p,
+  });
+  const pool = (await allProducts()).map(toItem);
+  return complementsFor([toItem(product)], pool, limit).map((c) => ({ product: c.item.product, reason: c.reason }));
 }
 
 /** Armados que se muestran en el inicio. */
