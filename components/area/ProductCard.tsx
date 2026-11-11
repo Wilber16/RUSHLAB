@@ -60,11 +60,13 @@ export function ProductCard({ product, compare, note }: { product: Product } & C
         <h3 className="pcard-name">
           <a href={href}>{product.name}</a>
         </h3>
-        <ul className="pcard-specs">
-          {product.specs.map((s) => (
-            <li key={s}>{s}</li>
-          ))}
-        </ul>
+        {product.specs.length > 0 && (
+          <ul className="pcard-specs">
+            {product.specs.map((s) => (
+              <li key={s}>{s}</li>
+            ))}
+          </ul>
+        )}
         <div className="pcard-foot">
           <p className="pcard-price">
             {product.compareAtPrice && <s>{formatPEN(product.compareAtPrice)}</s>}

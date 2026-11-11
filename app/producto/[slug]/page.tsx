@@ -143,11 +143,13 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             <a href={`/marca/${brandSlug(product.brand)}/`}>{product.brand}</a> · {product.kind}
           </p>
           <h1 className="product-name">{product.name}</h1>
-          <ul className="pcard-specs product-specs">
-            {product.specs.map((s) => (
-              <li key={s}>{s}</li>
-            ))}
-          </ul>
+          {product.specs.length > 0 && (
+            <ul className="pcard-specs product-specs">
+              {product.specs.map((s) => (
+                <li key={s}>{s}</li>
+              ))}
+            </ul>
+          )}
 
           <div className="product-buy">
             <p className="product-price">
@@ -248,12 +250,12 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
                   <dd>{d.value}</dd>
                 </div>
               ))
-            ) : (
+            ) : product.specs.length > 0 ? (
               <div>
                 <dt>Características</dt>
                 <dd>{product.specs.join(", ")}</dd>
               </div>
-            )}
+            ) : null}
           </dl>
         </div>
 
