@@ -70,14 +70,15 @@ export function BrandCarousel({ brands }: { brands: Brand[] }) {
     brands.map((b) => (
       <li key={`${copy ? "c-" : ""}${b.slug}`}>
         <a
-          className={`brand-tile${b.logo ? " has-logo" : ""}`}
+          className="brand-mark"
           href={`/marca/${b.slug}/`}
+          title={`Ver productos ${b.name}`}
           tabIndex={copy ? -1 : undefined}
         >
           {b.logo ? (
             <img
               className="brand-logo"
-              src={sizedImage(b.logo.url, 320)}
+              src={sizedImage(b.logo.url, 480)}
               alt={b.name}
               loading="lazy"
               decoding="async"
@@ -85,9 +86,6 @@ export function BrandCarousel({ brands }: { brands: Brand[] }) {
           ) : (
             <span className="brand-name">{b.name}</span>
           )}
-          <span className="brand-count">
-            {b.count} {b.count === 1 ? "producto" : "productos"}
-          </span>
         </a>
       </li>
     ));

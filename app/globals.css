@@ -4759,3 +4759,72 @@ select {
 .brand-tile .brand-logo {
   height: 28px;
 }
+
+/* Carrusel: solo logo o nombre, sin recuadro */
+.brand-scroller .brand-list {
+  align-items: center;
+  gap: 56px;
+  padding-right: 56px;
+}
+
+.brand-scroller:not(.is-loop) .brand-list {
+  padding-right: 0;
+}
+
+.brand-mark {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  color: var(--text);
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.brand-mark:hover,
+.brand-mark:focus-visible {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.brand-mark .brand-logo {
+  height: 64px;
+  max-width: 200px;
+  object-position: center;
+}
+
+.brand-mark .brand-name {
+  font-size: 2.1rem;
+}
+
+.brand-mark:hover .brand-name,
+.brand-mark:focus-visible .brand-name {
+  color: var(--orange);
+}
+
+@media (max-width: 600px) {
+  .brand-scroller .brand-list {
+    gap: 36px;
+    padding-right: 36px;
+  }
+  .brand-mark {
+    height: 56px;
+  }
+  .brand-mark .brand-logo {
+    height: 48px;
+    max-width: 150px;
+  }
+  .brand-mark .brand-name {
+    font-size: 1.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark {
+    transition: none;
+  }
+  .brand-mark:hover,
+  .brand-mark:focus-visible {
+    transform: none;
+  }
+}
