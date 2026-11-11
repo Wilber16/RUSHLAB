@@ -18,6 +18,7 @@ import { AddToCart } from "@/components/cart/AddToCart";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { BuyBar } from "@/components/product/BuyBar";
 import { RecentlyViewed } from "@/components/RecentlyViewed";
+import { labelSpecs } from "@/lib/spec-labels";
 import { JsonLd } from "@/components/JsonLd";
 import { absoluteUrl } from "@/lib/site-url";
 import { Check, KindIcon, Receipt, Shield, Truck, WhatsApp } from "@/components/icons";
@@ -243,19 +244,19 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               <dt>Tipo</dt>
               <dd>{product.kind}</dd>
             </div>
-            {product.details ? (
-              product.details.map((d) => (
-                <div key={d.label}>
-                  <dt>{d.label}</dt>
-                  <dd>{d.value}</dd>
-                </div>
-              ))
-            ) : product.specs.length > 0 ? (
-              <div>
-                <dt>Características</dt>
-                <dd>{product.specs.join(", ")}</dd>
-              </div>
-            ) : null}
+            {product.details
+              ? product.details.map((d) => (
+                  <div key={d.label}>
+                    <dt>{d.label}</dt>
+                    <dd>{d.value}</dd>
+                  </div>
+                ))
+              : labelSpecs(product.specs, product.kind).map((row) => (
+                  <div key={row.label}>
+                    <dt>{row.label}</dt>
+                    <dd>{row.value}</dd>
+                  </div>
+                ))}
           </dl>
         </div>
 
