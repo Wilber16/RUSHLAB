@@ -2,7 +2,13 @@ import type { LabArea } from "@/lib/catalog";
 import { Receipt, Shield, Truck, Check } from "../icons";
 
 const characters = {
-  prof: { src: "/brand/prof-rush.webp", alt: "Prof. Rush, el científico de RUSH LAB", who: "Prof. Rush", w: 380, h: 507 },
+  prof: {
+    src: "/brand/prof-rush.webp",
+    alt: "Prof. Rush, el científico de RUSH LAB",
+    who: "Prof. Rush",
+    w: 380,
+    h: 507,
+  },
   byte: { src: "/brand/byte.webp", alt: "BYTE, el especialista en velocidad de RUSH LAB", who: "BYTE", w: 480, h: 720 },
 };
 
@@ -45,7 +51,7 @@ export function AreaBanner({ area }: { area: LabArea }) {
         </ul>
       </div>
       <figure className="area-banner-art">
-        <img src={ch.src} alt={ch.alt} width={ch.w} height={ch.h} />
+        <img src={ch.src} alt={ch.alt} width={ch.w} height={ch.h} fetchPriority="high" />
         {area.quote && (
           <figcaption>
             “{area.quote}”<span>{ch.who}</span>

@@ -71,6 +71,39 @@ export async function getRelatedProducts(product: Product, limit = 4): Promise<P
     .slice(0, limit);
 }
 
+export type Brand = { name: string; slug: string; count: number };
+
+/** "Cooler Master" → "cooler-master". */
+export function brandSlug(name: string): string {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/** Marcas con al menos un producto, de la que más productos tiene a la que menos. */
+export async function getBrands(): Promise<Brand[]> {
+  const map = new Map<string, Brand>();
+  for (const p of await allProducts()) {
+    if (!p.brand?.trim()) continue;
+    const slug = brandSlug(p.brand);
+    const b = map.get(slug) ?? { name: p.brand.trim(), slug, count: 0 };
+    b.count += 1;
+    map.set(slug, b);
+  }
+  return [...map.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+}
+
+export async function getBrandBySlug(slug: string): Promise<Brand | undefined> {
+  return (await getBrands()).find((b) => b.slug === slug);
+}
+
+export async function getProductsByBrand(slug: string): Promise<Product[]> {
+  return (await allProducts()).filter((p) => brandSlug(p.brand) === slug);
+}
+
 /** Armados que se muestran en el inicio. */
 export async function getFeaturedBuilds(): Promise<Build[]> {
   return builds.filter((b) => b.onHome);

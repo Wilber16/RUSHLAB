@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllProducts, getAreaBySlug, getProductBySlug, getRelatedProducts } from "@/lib/catalog";
+import { getAllProducts, getAreaBySlug, getProductBySlug, getRelatedProducts, brandSlug } from "@/lib/catalog";
 import type { Availability } from "@/lib/catalog";
 import { getKindInfo } from "@/lib/catalog/kind-info";
 import { formatPEN, whatsappLink } from "@/lib/config";
@@ -9,6 +9,7 @@ import { ProductCard } from "@/components/area/ProductCard";
 import { PayMethods } from "@/components/PayMethods";
 import { AddToCart } from "@/components/cart/AddToCart";
 import { ProductGallery } from "@/components/product/ProductGallery";
+import { BuyBar } from "@/components/product/BuyBar";
 import { JsonLd } from "@/components/JsonLd";
 import { absoluteUrl } from "@/lib/site-url";
 import { Check, KindIcon, Receipt, Shield, Truck, WhatsApp } from "@/components/icons";
@@ -125,7 +126,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
         <div className="product-info">
           <p className="pcard-brand">
-            {product.brand} · {product.kind}
+            <a href={`/marca/${brandSlug(product.brand)}/`}>{product.brand}</a> · {product.kind}
           </p>
           <h1 className="product-name">{product.name}</h1>
           <ul className="pcard-specs product-specs">
@@ -151,7 +152,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               </div>
             </div>
 
-            <div className="product-ctas">
+            <div className="product-ctas" id="buy-ctas">
               {product.variantId && !soldOut && <AddToCart variantId={product.variantId} name={fullName} />}
               <a
                 className={`btn ${soldOut ? "btn-outline" : product.variantId ? "btn-ghost" : "btn-primary"}`}
@@ -164,7 +165,11 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
                 rel="noopener"
               >
                 <WhatsApp />
-                {soldOut ? "Avisarme cuando llegue" : product.variantId ? "Consultar por WhatsApp" : "Cotizar por WhatsApp"}
+                {soldOut
+                  ? "Avisarme cuando llegue"
+                  : product.variantId
+                    ? "Consultar por WhatsApp"
+                    : "Cotizar por WhatsApp"}
               </a>
               <a
                 className="btn btn-ghost"
@@ -194,6 +199,15 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </div>
         </div>
       </section>
+      {!soldOut && (
+        <BuyBar
+          targetId="buy-ctas"
+          name={fullName}
+          price={product.price}
+          variantId={product.variantId}
+          whatsappHref={whatsappLink(`Hola RUSH LAB, quiero comprar el ${fullName} (${formatPEN(product.price)}).`)}
+        />
+      )}
 
       <section className="product-details">
         <div className="product-block">
@@ -201,7 +215,9 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <dl className="spec-table">
             <div>
               <dt>Marca</dt>
-              <dd>{product.brand}</dd>
+              <dd>
+                <a href={`/marca/${brandSlug(product.brand)}/`}>{product.brand}</a>
+              </dd>
             </div>
             <div>
               <dt>Modelo</dt>
@@ -211,19 +227,19 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               <dt>Tipo</dt>
               <dd>{product.kind}</dd>
             </div>
-            {product.details
-              ? product.details.map((d) => (
-                  <div key={d.label}>
-                    <dt>{d.label}</dt>
-                    <dd>{d.value}</dd>
-                  </div>
-                ))
-              : (
-                <div>
-                  <dt>Características</dt>
-                  <dd>{product.specs.join(", ")}</dd>
+            {product.details ? (
+              product.details.map((d) => (
+                <div key={d.label}>
+                  <dt>{d.label}</dt>
+                  <dd>{d.value}</dd>
                 </div>
-              )}
+              ))
+            ) : (
+              <div>
+                <dt>Características</dt>
+                <dd>{product.specs.join(", ")}</dd>
+              </div>
+            )}
           </dl>
         </div>
 

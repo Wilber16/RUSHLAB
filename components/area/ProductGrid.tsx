@@ -71,17 +71,19 @@ export function ProductGrid({ products, areaName }: { products: Product[]; areaN
           </div>
         )}
         <div className="filter-row">
-          <label className="select-label">
-            <span className="visually-hidden">Marca</span>
-            <select id="brand" value={brand} onChange={(e) => setBrand(e.target.value)}>
-              <option value="all">Todas las marcas</option>
-              {brands.map((b) => (
-                <option key={b} value={b}>
-                  {b}
-                </option>
-              ))}
-            </select>
-          </label>
+          {brands.length > 1 && (
+            <label className="select-label">
+              <span className="visually-hidden">Marca</span>
+              <select id="brand" value={brand} onChange={(e) => setBrand(e.target.value)}>
+                <option value="all">Todas las marcas</option>
+                {brands.map((b) => (
+                  <option key={b} value={b}>
+                    {b}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
           <label className="toggle">
             <input
               id="only-available"

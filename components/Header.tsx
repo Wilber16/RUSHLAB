@@ -2,6 +2,7 @@ import { site, whatsappLink } from "@/lib/config";
 import { CartLink } from "./cart/CartLink";
 import { Logo } from "./Logo";
 import { Menu, Search, WhatsApp } from "./icons";
+import { SearchBox } from "./SearchBox";
 
 const nav = [
   { label: "Áreas del laboratorio", href: "/areas/" },
@@ -9,7 +10,6 @@ const nav = [
   { label: "Upgrades", href: "/upgrades/" },
   { label: "Ofertas", href: "/ofertas/" },
   { label: "Contacto", href: "/contacto/" },
-  
 ];
 
 export function Header() {
@@ -20,15 +20,7 @@ export function Header() {
       <div className="wrap header-main">
         <Logo />
 
-        <form className="search" role="search" action="/buscar/" method="get">
-          <label className="visually-hidden" htmlFor="q">
-            Buscar productos
-          </label>
-          <input id="q" name="q" type="search" placeholder="Busca una tarjeta gráfica, un SSD, un monitor…" />
-          <button type="submit" aria-label="Buscar">
-            <Search />
-          </button>
-        </form>
+        <SearchBox id="q" placeholder="Busca una tarjeta gráfica, un SSD, un monitor…" />
 
         <div className="header-actions">
           <a className="btn btn-ghost btn-ghost-wide" href={quote} target="_blank" rel="noopener">
@@ -41,15 +33,7 @@ export function Header() {
           <summary aria-label="Buscar">
             <Search />
           </summary>
-          <form className="search mobile-search-panel" role="search" action="/buscar/" method="get">
-            <label className="visually-hidden" htmlFor="q-m">
-              Buscar productos
-            </label>
-            <input id="q-m" name="q" type="search" placeholder="Busca un producto…" />
-            <button type="submit" aria-label="Buscar">
-              <Search />
-            </button>
-          </form>
+          <SearchBox id="q-m" placeholder="Busca un producto…" className="search mobile-search-panel" />
         </details>
 
         <CartLink />

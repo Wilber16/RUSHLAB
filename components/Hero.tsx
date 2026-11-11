@@ -12,8 +12,8 @@ export function Hero() {
             <span className="line-2">armada y probada</span>
           </h1>
           <p className="hero-lead">
-            Te ayudamos a elegir cada pieza según tu presupuesto. La armamos, la sometemos a pruebas de estabilidad y
-            te la entregamos con su reporte. Enviamos a Lima y a todo el Perú.
+            Te ayudamos a elegir cada pieza según tu presupuesto. La armamos, la sometemos a pruebas de estabilidad y te
+            la entregamos con su reporte. Enviamos a Lima y a todo el Perú.
           </p>
           <div className="hero-actions">
             <a className="btn btn-primary" href="#armados">
@@ -34,6 +34,10 @@ export function Hero() {
         <div className="hero-visual">
           <img
             src="/brand/equipo-rush-lab.webp"
+            srcSet="/brand/equipo-rush-lab-480.webp 480w, /brand/equipo-rush-lab-640.webp 640w, /brand/equipo-rush-lab.webp 900w"
+            sizes="(max-width: 900px) min(calc(100vw - 32px), 520px), 600px"
+            fetchPriority="high"
+            decoding="async"
             alt="Prof. Rush y BYTE, los personajes de RUSH LAB, en el laboratorio"
             width={900}
             height={1046}

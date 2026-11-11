@@ -4,6 +4,8 @@
 // Protección y Defensa del Consumidor.
 
 export const campaign = {
+  /** false = campaña en pausa: /ofertas/ muestra solo las rebajas reales, sin fechas ni beneficios. */
+  enabled: false,
   name: "Black Friday RUSH LAB",
   /** Fechas en formato AAAA-MM-DD, hora de Lima */
   start: "2026-11-27",

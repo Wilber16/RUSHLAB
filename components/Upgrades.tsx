@@ -13,7 +13,16 @@ export function Upgrades() {
     <section className="section" id="upgrades" aria-labelledby="upgrades-title">
       <div className="wrap upgrade">
         <div className="upgrade-visual">
-          <img src="/brand/byte.webp" alt="BYTE, el especialista en velocidad de RUSH LAB" width={480} height={720} />
+          <img
+            src="/brand/byte.webp"
+            srcSet="/brand/byte-320.webp 320w, /brand/byte.webp 480w"
+            sizes="(max-width: 900px) 260px, 380px"
+            alt="BYTE, el especialista en velocidad de RUSH LAB"
+            width={480}
+            height={720}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
         <div className="upgrade-copy">
           <h2 id="upgrades-title">¿Tu PC ya no rinde? Mejórala sin cambiarla entera.</h2>

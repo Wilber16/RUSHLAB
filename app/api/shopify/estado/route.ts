@@ -73,6 +73,9 @@ export async function GET() {
     if (sample && sample.quantityAvailable === null) {
       pendientes.push("Activar el permiso unauthenticated_read_product_inventory en la API Storefront.");
     }
+    if (!process.env.SHOPIFY_WEBHOOK_SECRET) {
+      pendientes.push("Opcional: crear SHOPIFY_WEBHOOK_SECRET en Vercel para que los cambios se vean al instante.");
+    }
 
     return NextResponse.json({
       configurado: true,
@@ -88,6 +91,7 @@ export async function GET() {
       })),
       fuenteDelCatalogo: catalog.source === "shopify" ? "Shopify" : "Datos de ejemplo",
       productosEnLaWeb: catalog.products.length,
+      cambiosAlInstante: Boolean(process.env.SHOPIFY_WEBHOOK_SECRET),
       pendientes,
     });
   } catch (e) {

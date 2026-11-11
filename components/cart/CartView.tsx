@@ -12,7 +12,11 @@ export function CartView() {
   const ctx = useCart();
 
   if (!ctx || ctx.loading) {
-    return <p className="muted">Cargando tu carrito…</p>;
+    return (
+      <p className="muted cart-loading" aria-busy="true">
+        Cargando tu carrito…
+      </p>
+    );
   }
 
   const { cart, busy, update, remove, error } = ctx;
@@ -63,7 +67,9 @@ export function CartView() {
                   {line.title}
                 </a>
                 <p className="small muted">{formatPEN(line.unitPrice)} c/u</p>
-                {!line.availableForSale && <p className="form-error small">Ya no está disponible. Quítalo para continuar.</p>}
+                {!line.availableForSale && (
+                  <p className="form-error small">Ya no está disponible. Quítalo para continuar.</p>
+                )}
               </div>
               <div className="qty" role="group" aria-label={`Cantidad de ${line.title}`}>
                 <button
@@ -102,7 +108,9 @@ export function CartView() {
       <aside className="cart-summary" aria-label="Resumen">
         <h2>Resumen</h2>
         <div className="sum-total">
-          <span>Subtotal ({cart.totalQuantity} {cart.totalQuantity === 1 ? "producto" : "productos"})</span>
+          <span>
+            Subtotal ({cart.totalQuantity} {cart.totalQuantity === 1 ? "producto" : "productos"})
+          </span>
           <strong>{formatPEN(cart.subtotal)}</strong>
         </div>
         <p className="small muted">Precios con IGV. El envío se calcula en el siguiente paso según tu ciudad.</p>
