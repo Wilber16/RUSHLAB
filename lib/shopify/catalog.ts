@@ -139,8 +139,37 @@ function availability(node: ShopifyProductNode): Availability {
   return "in_stock";
 }
 
+// Tipo de producto → nombre bien escrito y área. Así "REFRIGERACION", "refrigeracion"
+// o "Refrigeración" funcionan igual aunque la colección de Shopify no lo atrape.
+const KINDS: Record<string, { label: string; area: AreaSlug }> = {
+  "tarjeta grafica": { label: "Tarjeta gráfica", area: "rush-power" },
+  procesador: { label: "Procesador", area: "rush-power" },
+  "memoria ram": { label: "Memoria RAM", area: "hyperspeed" },
+  ssd: { label: "SSD", area: "hyperspeed" },
+  "placa madre": { label: "Placa madre", area: "the-lab" },
+  "fuente de poder": { label: "Fuente de poder", area: "the-lab" },
+  gabinete: { label: "Gabinete", area: "the-lab" },
+  refrigeracion: { label: "Refrigeración", area: "the-lab" },
+  monitor: { label: "Monitor", area: "control-room" },
+  teclado: { label: "Teclado", area: "gaming-arsenal" },
+  mouse: { label: "Mouse", area: "gaming-arsenal" },
+  audifonos: { label: "Audífonos", area: "gaming-arsenal" },
+  accesorio: { label: "Accesorio", area: "gaming-arsenal" },
+};
+
+const kindKey = (t: string) =>
+  t
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, " ");
+
 export function mapProduct(node: ShopifyProductNode): Product | null {
-  const area = node.collections.nodes.map((c) => c.handle).find((h): h is AreaSlug => AREA_HANDLES.includes(h as AreaSlug));
+  const known = KINDS[kindKey(node.productType || "")];
+  const area =
+    node.collections.nodes.map((c) => c.handle).find((h): h is AreaSlug => AREA_HANDLES.includes(h as AreaSlug)) ??
+    known?.area;
   const v = node.variants.nodes.at(0);
   if (!area || !v) return null; // fuera de las áreas del laboratorio o sin precio
 
@@ -153,7 +182,7 @@ export function mapProduct(node: ShopifyProductNode): Product | null {
     slug: node.handle,
     area,
     brand: node.vendor || "RUSH LAB",
-    kind: node.productType || "Accesorio",
+    kind: known?.label ?? (node.productType || "Accesorio"),
     name: node.title,
     specs: parseSpecs(node),
     price,

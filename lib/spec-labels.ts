@@ -26,7 +26,7 @@ const rules: Rule[] = [
   { label: "Potencia", test: /\b\d{3,4}\s?W\b/i },
   { label: "Núcleos", test: /\bn[uú]cleos|cores?\b/i },
   { label: "Conectividad", test: /\b(Wi-?Fi|Bluetooth|inal[aá]mbric|wireless|2\.4\s?GHz)/i },
-  { label: "Tipo", test: /\b(l[ií]quida|aire|torre|\d{3}\s?mm)\b/i, kinds: ["refrigeracion"] },
+  { label: "Sistema", test: /\b(l[ií]quida|aire|torre|\d{3}\s?mm)\b/i, kinds: ["refrigeracion"] },
   { label: "Switches", test: /\b(switch|switches|red|blue|brown|óptic|magn[eé]tic)/i, kinds: ["teclado"] },
   { label: "Sensor", test: /\b(DPI|sensor)\b/i, kinds: ["mouse"] },
 ];
